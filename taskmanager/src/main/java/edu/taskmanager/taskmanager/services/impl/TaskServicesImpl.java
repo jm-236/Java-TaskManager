@@ -45,6 +45,7 @@ public class TaskServicesImpl implements TaskServices {
         Optional<User> user = userRepository.findById(userId);
 
         if (user.isPresent()) {
+            task.setUser(user.get());
             user.get().addTask(task);
             taskRepository.save(task);
         }
