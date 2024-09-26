@@ -1,10 +1,14 @@
 package edu.taskmanager.taskmanager.domain.user;
 
+import edu.taskmanager.taskmanager.domain.task.Task;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
+
 /*
 * Entidade User
 * Representa um usuário do sistema
@@ -19,6 +23,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id; // id identificador do usuário
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tarefas;
 
     private String name; // name: nome do usuário
     private String email; // email: email do usuário
