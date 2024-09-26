@@ -30,4 +30,15 @@ public class User {
     private String name; // name: nome do usuário
     private String email; // email: email do usuário
     private String password; // password: senha do usuário
+
+    // Método para adicionar uma tarefa à lista de tarefas do usuário
+    public void addTask(Task task) {
+        tarefas.add(task);
+        task.setUser(this); // Define a relação bidirecional
+    }
+
+    public void removeTask(Task task) {
+        tarefas.remove(task);
+        task.setUser(null); // Remove a referência do usuário na tarefa
+    }
 }
