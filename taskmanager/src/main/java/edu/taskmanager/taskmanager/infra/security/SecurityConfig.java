@@ -44,9 +44,11 @@ public class SecurityConfig {
                         // liberação dos endpoints de login e registro para cadastro e login dos usuários
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll() // acesso ao console do banco de dados
                         // para qualquer outra camada ele deve estar autenticado
                         .anyRequest().authenticated()
                 )
+                .headers(headers -> headers.frameOptions().disable())
                 // adição do filtro de segurança que valida o token do usuário antes de permitir o acesso
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

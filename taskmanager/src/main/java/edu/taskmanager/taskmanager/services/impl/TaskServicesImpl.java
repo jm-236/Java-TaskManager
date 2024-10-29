@@ -2,11 +2,11 @@ package edu.taskmanager.taskmanager.services.impl;
 
 import edu.taskmanager.taskmanager.domain.task.Task;
 import edu.taskmanager.taskmanager.domain.user.User;
+import edu.taskmanager.taskmanager.infra.security.TokenService;
 import edu.taskmanager.taskmanager.repositories.TaskRepository;
 import edu.taskmanager.taskmanager.repositories.UserRepository;
 import edu.taskmanager.taskmanager.services.TaskServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,64 +21,77 @@ public class TaskServicesImpl implements TaskServices {
     @Autowired
     private TaskRepository taskRepository;
 
-    @Override
-    public Iterable<Task> listAllTasks(String userId) {
-        Optional<User> user = userRepository.findById(userId);
-        return user.map(value -> taskRepository.findByUser(value).orElse(null)).orElse(null);
-    }
+    @Autowired
+    TokenService tokenService;
 
     @Override
-    public Iterable<Task> listAllTasksByCategory(String userId, String category) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            List<Task> userTasks = taskRepository.findByUser(userOptional.get())
-                    .orElse(null);
-            if (userTasks != null) {
-                return userTasks.stream().filter(task -> task.getCategory().equals(category)).toList();
+    public List<Task> listAllTasks(String userEmail) {
+        Optional<User> userOpt = userRepository.findByEmail(userEmail);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            Optional<List<Task>> listOpt = taskRepository.findByUser(user);
+            if (listOpt.isPresent()){
+                return listOpt.get();
             }
+            return null;
         }
         return null;
     }
 
-    @Override
-    public void saveTask(Task task, String userId) {
-        Optional<User> user = userRepository.findById(userId);
+//    @Override
+//    public Iterable<Task> listAllTasksByCategory(String userId, String category) {
+//        Optional<User> userOptional = userRepository.findById(userId);
+//        if (userOptional.isPresent()) {
+//            List<Task> userTasks = taskRepository.findByUser(userOptional.get())
+//                    .orElse(null);
+//            if (userTasks != null) {
+//                return userTasks.stream().filter(task -> task.getCategory().equals(category)).toList();
+//            }
+//        }
+//        return null;
+//    }
 
-        if (user.isPresent()) {
-            task.setUser(user.get());
-            user.get().addTask(task);
+    @Override
+    public void saveTask(Task task, String email) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            task.setUser(user);
             taskRepository.save(task);
+
         }
+        System.out.println("Usuário não encontrado");
     }
 
-    @Override
-    public void deleteTask(String taskId) {
-        Optional<Task> taskOptional = taskRepository.findById(taskId);
-        Optional<User> userOptional = userRepository.findById(taskOptional.get().getUser().getId());
+//    @Override
+//    public void deleteTask(String taskId) {
+//        Optional<Task> taskOptional = taskRepository.findById(taskId);
+//        Optional<User> userOptional = userRepository.findById(taskOptional.get().getUser().getId());
+//
+//        if (userOptional.isPresent()) {
+//            Task task = taskOptional.get();
+//            User user = userOptional.get();
+//
+//            user.removeTask(task);
+//            task.setUser(null);
+//        }
+//    }
 
-        if (userOptional.isPresent()) {
-            Task task = taskOptional.get();
-            User user = userOptional.get();
-
-            user.removeTask(task);
-            task.setUser(null);
-        }
-    }
-
-    @Override
-    public void updateTask(String taskId, Task task) {
-        Optional<Task> taskOptional = taskRepository.findById(taskId);
-
-        if (taskOptional.isPresent()) {
-            Task taskToUpdate = taskOptional.get();
-            taskToUpdate.setTitle(task.getTitle());
-            taskToUpdate.setDescription(task.getDescription());
-            taskToUpdate.setCreatedDate(task.getCreatedDate());
-            taskToUpdate.setCategory(task.getCategory());
-            taskToUpdate.setStatus(task.getStatus());
-            taskRepository.save(taskToUpdate);
-        }
-    }
+//    @Override
+//    public void updateTask(String taskId, Task task) {
+//        Optional<Task> taskOptional = taskRepository.findById(taskId);
+//
+//        if (taskOptional.isPresent()) {
+//            Task taskToUpdate = taskOptional.get();
+//            taskToUpdate.setTitle(task.getTitle());
+//            taskToUpdate.setDescription(task.getDescription());
+//            taskToUpdate.setCreatedDate(task.getCreatedDate());
+//            taskToUpdate.setCategory(task.getCategory());
+//            taskToUpdate.setStatus(task.getStatus());
+//            taskRepository.save(taskToUpdate);
+//        }
+//    }
 }
 
 

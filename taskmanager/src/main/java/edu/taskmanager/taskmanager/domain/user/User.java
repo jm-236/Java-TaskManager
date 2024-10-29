@@ -24,7 +24,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id; // id identificador do usuário
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Task> tarefas;
 
     private String name; // name: nome do usuário
@@ -40,5 +40,15 @@ public class User {
     public void removeTask(Task task) {
         tarefas.remove(task);
         task.setUser(null); // Remove a referência do usuário na tarefa
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

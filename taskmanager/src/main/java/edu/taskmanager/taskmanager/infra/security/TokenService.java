@@ -6,6 +6,8 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import edu.taskmanager.taskmanager.domain.user.User;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -42,6 +44,13 @@ public class TokenService {
     private Instant generateExpirationDate() {
         ZonedDateTime zdt = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).plusSeconds(7200);
         return zdt.toInstant();
+    }
+
+    public String getUserEmailFromToken(String token) {
+        if (token.startsWith("Bearer ")) {
+            return validateToken(token.substring(7));
+        }
+        return validateToken(token);
     }
 
     // Método para validar o token
