@@ -27,7 +27,10 @@ public class TaskServicesImpl implements TaskServices {
     TokenService tokenService;
 
     @Override
-    public List<Task> listAllTasks(String userEmail) {
+    public List<Task> listAllTasks(String authorizationHeader) {
+
+        String userEmail = tokenService.getUserEmailFromToken(authorizationHeader);
+
         Optional<User> userOpt = userRepository.findByEmail(userEmail);
         if (userOpt.isPresent()) {
             User user = userOpt.get();
@@ -37,7 +40,7 @@ public class TaskServicesImpl implements TaskServices {
             }
             return null;
         }
-        return null;
+        throw new EntityNotFoundException("User not found with email " + userEmail);
     }
 
 //    @Override

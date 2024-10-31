@@ -49,9 +49,8 @@ public class UserController {
         if (authorizationHeader == null) {
             return ResponseEntity.ok("Token não encontrado");
         }
-        String email = tokenService.getUserEmailFromToken(authorizationHeader);
 
-        List<Task> tasks = taskServices.listAllTasks(email);
+        List<Task> tasks = taskServices.listAllTasks(authorizationHeader);
 
         return new ResponseEntity<>(tasks.toString(), HttpStatus.OK);
     }
