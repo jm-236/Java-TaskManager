@@ -2,6 +2,7 @@ package edu.taskmanager.taskmanager.services.impl;
 
 import edu.taskmanager.taskmanager.domain.task.Task;
 import edu.taskmanager.taskmanager.domain.user.User;
+import edu.taskmanager.taskmanager.dto.TaskDto;
 import edu.taskmanager.taskmanager.infra.security.TokenService;
 import edu.taskmanager.taskmanager.repositories.TaskRepository;
 import edu.taskmanager.taskmanager.repositories.UserRepository;
@@ -53,13 +54,23 @@ public class TaskServicesImpl implements TaskServices {
 //    }
 
     @Override
-    public void saveTask(Task task, String email) {
+    public void saveTask(TaskDto taskDto, String authHeader) {
+
+        String email = tokenService.getUserEmailFromToken(authHeader);
+
+        Task newTask = new Task();
+        newTask.setTitle(taskDto.title());
+        newTask.setDescription(taskDto.description());
+        newTask.setStatus(taskDto.status());
+        newTask.setCategory(taskDto.category());
+        newTask.setCreatedDate(taskDto.createdDate());
+
         Optional<User> userOpt = userRepository.findByEmail(email);
 
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            task.setUser(user);
-            taskRepository.save(task);
+            newTask.setUser(user);
+            taskRepository.save(newTask);
 
         }
         else {

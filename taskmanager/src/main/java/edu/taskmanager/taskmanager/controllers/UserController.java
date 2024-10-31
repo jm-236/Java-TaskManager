@@ -62,17 +62,8 @@ public class UserController {
         if (authorizationHeader == null) {
             return ResponseEntity.ok("Token não encontrado");
         }
-        String email = tokenService.getUserEmailFromToken(authorizationHeader);
 
-        Task newTask = new Task();
-        newTask.setTitle(body.title());
-        newTask.setDescription(body.description());
-        newTask.setStatus(body.status());
-        newTask.setCategory(body.category());
-        newTask.setCreatedDate(body.createdDate());
-
-        taskServices.saveTask(newTask, email);
-
+        taskServices.saveTask(body, authorizationHeader);
         return ResponseEntity.ok("Task created!");
     }
 
