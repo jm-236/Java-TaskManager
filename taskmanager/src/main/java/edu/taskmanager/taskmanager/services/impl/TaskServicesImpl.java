@@ -6,6 +6,7 @@ import edu.taskmanager.taskmanager.infra.security.TokenService;
 import edu.taskmanager.taskmanager.repositories.TaskRepository;
 import edu.taskmanager.taskmanager.repositories.UserRepository;
 import edu.taskmanager.taskmanager.services.TaskServices;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,7 +62,9 @@ public class TaskServicesImpl implements TaskServices {
             taskRepository.save(task);
 
         }
-        System.out.println("Usuário não encontrado");
+        else {
+            throw new EntityNotFoundException("User not found with email " + email);
+        }
     }
 
 //    @Override
@@ -78,20 +81,18 @@ public class TaskServicesImpl implements TaskServices {
 //        }
 //    }
 
-//    @Override
-//    public void updateTask(String taskId, Task task) {
-//        Optional<Task> taskOptional = taskRepository.findById(taskId);
-//
-//        if (taskOptional.isPresent()) {
-//            Task taskToUpdate = taskOptional.get();
-//            taskToUpdate.setTitle(task.getTitle());
-//            taskToUpdate.setDescription(task.getDescription());
-//            taskToUpdate.setCreatedDate(task.getCreatedDate());
-//            taskToUpdate.setCategory(task.getCategory());
-//            taskToUpdate.setStatus(task.getStatus());
-//            taskRepository.save(taskToUpdate);
-//        }
-//    }
+    @Override
+    public void updateTask(String taskId, Task task) {
+        Optional<Task> taskOptional = taskRepository.findById(taskId);
+
+        if (taskOptional.isPresent()) {
+            task.setId(taskId);
+            taskRepository.save(task);
+        }
+        else {
+            throw new EntityNotFoundException("Task not found with id " + taskId);
+        }
+    }
 }
 
 

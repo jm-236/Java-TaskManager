@@ -56,7 +56,7 @@ public class UserController {
         return new ResponseEntity<>(tasks.toString(), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/tasks")
     public ResponseEntity<String>
     createTask(@RequestBody TaskDto body, @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader){
         if (authorizationHeader == null) {
@@ -74,5 +74,20 @@ public class UserController {
         taskServices.saveTask(newTask, email);
 
         return ResponseEntity.ok("Task created!");
+    }
+
+    @PutMapping("/tasks/{taskId}")
+    public ResponseEntity<String>
+    updateTask(@RequestBody TaskDto body, @PathVariable String taskId) {
+        Task newTask = new Task();
+        newTask.setTitle(body.title());
+        newTask.setDescription(body.description());
+        newTask.setStatus(body.status());
+        newTask.setCategory(body.category());
+        newTask.setCreatedDate(body.createdDate());
+
+        taskServices.updateTask(taskId, newTask);
+
+        return ResponseEntity.ok("Tarefa atualizada com sucesso!");
     }
 }
