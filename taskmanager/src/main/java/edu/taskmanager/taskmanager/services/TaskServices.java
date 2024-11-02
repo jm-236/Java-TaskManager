@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 public interface TaskServices {
     Iterable<Task> listAllTasks(String userId);
 
-    // Iterable<Task> listAllTasksByCategory(String userId, String category);
-
     void saveTask(TaskDto taskdto, String authHeader);
 
-    // void deleteTask(String taskId);
+    void deleteTask(String taskId);
 
     void updateTask(String taskId, Task task);
+
+    String getTaskName(String taskId);
 }

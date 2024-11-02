@@ -81,19 +81,16 @@ public class TaskServicesImpl implements TaskServices {
         }
     }
 
-//    @Override
-//    public void deleteTask(String taskId) {
-//        Optional<Task> taskOptional = taskRepository.findById(taskId);
-//        Optional<User> userOptional = userRepository.findById(taskOptional.get().getUser().getId());
-//
-//        if (userOptional.isPresent()) {
-//            Task task = taskOptional.get();
-//            User user = userOptional.get();
-//
-//            user.removeTask(task);
-//            task.setUser(null);
-//        }
-//    }
+    @Override
+    public void deleteTask(String taskId) {
+
+        Optional<Task> taskOpt = taskRepository.findById(taskId);
+
+        System.out.println(taskOpt);
+        if (taskOpt.isPresent()){
+            taskRepository.delete(taskOpt.get());
+        }
+    }
 
     @Override
     public void updateTask(String taskId, Task task) {
@@ -102,6 +99,19 @@ public class TaskServicesImpl implements TaskServices {
         if (taskOptional.isPresent()) {
             task.setId(taskId);
             taskRepository.save(task);
+        }
+        else {
+            throw new EntityNotFoundException("Task not found with id " + taskId);
+        }
+    }
+
+    @Override
+    public String getTaskName(String taskId){
+        Optional<Task> taskOptional = taskRepository.findById(taskId);
+
+        if (taskOptional.isPresent()) {
+
+            return taskOptional.get().getTitle();
         }
         else {
             throw new EntityNotFoundException("Task not found with id " + taskId);

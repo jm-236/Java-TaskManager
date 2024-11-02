@@ -80,4 +80,13 @@ public class UserController {
 
         return ResponseEntity.ok("Tarefa atualizada com sucesso!");
     }
+
+    @DeleteMapping("/tasks/{taskId}")
+    public ResponseEntity<String>
+    deleteTask(@PathVariable String taskId){
+
+        taskServices.deleteTask(taskId);
+        String taskName = taskServices.getTaskName(taskId);
+        return ResponseEntity.ok("Task '" + taskName + "' deleted with sucess");
+    }
 }
