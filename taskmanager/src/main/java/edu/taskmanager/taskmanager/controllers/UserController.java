@@ -45,13 +45,11 @@ public class UserController {
 
     @GetMapping("/tasks")
     public ResponseEntity<String> getTasks(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
-
         if (authorizationHeader == null) {
             return ResponseEntity.ok("Token não encontrado");
         }
 
         List<Task> tasks = taskServices.listAllTasks(authorizationHeader);
-
         return new ResponseEntity<>(tasks.toString(), HttpStatus.OK);
     }
 
@@ -68,16 +66,13 @@ public class UserController {
 
     @PutMapping("/tasks/{taskId}")
     public ResponseEntity<String>
-    updateTask(@RequestBody TaskDto body, @PathVariable String taskId) {
-        Task newTask = new Task();
-        newTask.setTitle(body.title());
-        newTask.setDescription(body.description());
-        newTask.setStatus(body.status());
-        newTask.setCategory(body.category());
-        newTask.setCreatedDate(body.createdDate());
+    updateTask(@RequestBody TaskDto body, @PathVariable String taskId,
+    @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
+        if (authorizationHeader == null) {
+            return ResponseEntity.ok("Token não encontrado");
+        }
 
-        taskServices.updateTask(taskId, newTask);
-
+        taskServices.updateTask(body, taskId, authorizationHeader);
         return ResponseEntity.ok("Tarefa atualizada com sucesso!");
     }
 
@@ -85,8 +80,9 @@ public class UserController {
     public ResponseEntity<String>
     deleteTask(@PathVariable String taskId){
 
-        taskServices.deleteTask(taskId);
+
         String taskName = taskServices.getTaskName(taskId);
+        taskServices.deleteTask(taskId);
         return ResponseEntity.ok("Task '" + taskName + "' deleted with sucess");
     }
 }

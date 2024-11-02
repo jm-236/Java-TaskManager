@@ -8,6 +8,7 @@ import edu.taskmanager.taskmanager.repositories.TaskRepository;
 import edu.taskmanager.taskmanager.repositories.UserRepository;
 import edu.taskmanager.taskmanager.services.TaskServices;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,19 +44,6 @@ public class TaskServicesImpl implements TaskServices {
         throw new EntityNotFoundException("User not found with email " + userEmail);
     }
 
-//    @Override
-//    public Iterable<Task> listAllTasksByCategory(String userId, String category) {
-//        Optional<User> userOptional = userRepository.findById(userId);
-//        if (userOptional.isPresent()) {
-//            List<Task> userTasks = taskRepository.findByUser(userOptional.get())
-//                    .orElse(null);
-//            if (userTasks != null) {
-//                return userTasks.stream().filter(task -> task.getCategory().equals(category)).toList();
-//            }
-//        }
-//        return null;
-//    }
-
     @Override
     public void saveTask(TaskDto taskDto, String authHeader) {
 
@@ -82,23 +70,46 @@ public class TaskServicesImpl implements TaskServices {
     }
 
     @Override
+    @Transactional
     public void deleteTask(String taskId) {
 
         Optional<Task> taskOpt = taskRepository.findById(taskId);
 
-        System.out.println(taskOpt);
+        // System.out.println(taskOpt);
         if (taskOpt.isPresent()){
+            Task task = taskOpt.get();
+            User user = task.getUser();
+            user.removeTask(task);
             taskRepository.delete(taskOpt.get());
+            System.out.println("Task deleted: " + taskOpt.get());
         }
     }
 
     @Override
-    public void updateTask(String taskId, Task task) {
+    public void updateTask(TaskDto taskDto, String taskId, String authHeader) {
+        Task newTask = new Task();
+        newTask.setTitle(taskDto.title());
+        newTask.setDescription(taskDto.description());
+        newTask.setStatus(taskDto.status());
+        newTask.setCategory(taskDto.category());
+        newTask.setCreatedDate(taskDto.createdDate());
+
+        String email = tokenService.getUserEmailFromToken(authHeader);
+        Optional<User> userOptional = userRepository.findByEmail(email);
+
+        if (userOptional.isPresent()){
+            User user = userOptional.get();
+            newTask.setUser(user);
+        }
+        else {
+            throw new EntityNotFoundException("Found no user with email " + email);
+        }
+
         Optional<Task> taskOptional = taskRepository.findById(taskId);
 
         if (taskOptional.isPresent()) {
-            task.setId(taskId);
-            taskRepository.save(task);
+            newTask.setId(taskId);
+            taskRepository.save(newTask);
         }
         else {
             throw new EntityNotFoundException("Task not found with id " + taskId);

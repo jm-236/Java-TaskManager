@@ -13,7 +13,7 @@ public interface TaskServices {
 
     void deleteTask(String taskId);
 
-    void updateTask(String taskId, Task task);
+    void updateTask(TaskDto taskDto, String taskId, String authHeader);
 
     String getTaskName(String taskId);
 }
