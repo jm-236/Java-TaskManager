@@ -15,6 +15,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * TaskServicesImpl is a service implementation class that provides methods for managing tasks.
+ * It implements the TaskServices interface.
+ */
 @Service
 public class TaskServicesImpl implements TaskServices {
 
@@ -27,6 +31,12 @@ public class TaskServicesImpl implements TaskServices {
     @Autowired
     TokenService tokenService;
 
+    /**
+     * Lists all tasks associated with the user identified by the authorization token.
+     * @param authorizationHeader - The authorization token from the request header.
+     * @return a list of tasks associated with the user.
+     * @throws EntityNotFoundException if the user is not found.
+     */
     @Override
     public List<Task> listAllTasks(String authorizationHeader) {
 
@@ -44,6 +54,12 @@ public class TaskServicesImpl implements TaskServices {
         throw new EntityNotFoundException("User not found with email " + userEmail);
     }
 
+    /**
+     * Saves a new task based on the provided TaskDto and authorization token.
+     * @param taskDto - TaskDto object that contains the task details.
+     * @param authHeader - The authorization token from the request header.
+     * @throws EntityNotFoundException if the user is not found.
+     */
     @Override
     public void saveTask(TaskDto taskDto, String authHeader) {
 
@@ -69,13 +85,16 @@ public class TaskServicesImpl implements TaskServices {
         }
     }
 
+    /**
+     * Deletes a task identified by the task ID.
+     * @param taskId - The ID of the task to be deleted.
+     */
     @Override
     @Transactional
     public void deleteTask(String taskId) {
 
         Optional<Task> taskOpt = taskRepository.findById(taskId);
 
-        // System.out.println(taskOpt);
         if (taskOpt.isPresent()){
             Task task = taskOpt.get();
             User user = task.getUser();
@@ -85,6 +104,13 @@ public class TaskServicesImpl implements TaskServices {
         }
     }
 
+    /**
+     * Updates an existing task based on the provided TaskDto, taskId, and authorization token.
+     * @param taskDto - TaskDto object that contains the updated task details.
+     * @param taskId - The ID of the task to be updated.
+     * @param authHeader - The authorization token from the request header.
+     * @throws EntityNotFoundException if the user or task is not found.
+     */
     @Override
     public void updateTask(TaskDto taskDto, String taskId, String authHeader) {
         Task newTask = new Task();
@@ -116,12 +142,17 @@ public class TaskServicesImpl implements TaskServices {
         }
     }
 
+    /**
+     * Retrieves the name of the task identified by the task ID.
+     * @param taskId - The ID of the task.
+     * @return the name of the task.
+     * @throws EntityNotFoundException if the task is not found.
+     */
     @Override
     public String getTaskName(String taskId){
         Optional<Task> taskOptional = taskRepository.findById(taskId);
 
         if (taskOptional.isPresent()) {
-
             return taskOptional.get().getTitle();
         }
         else {
@@ -129,5 +160,3 @@ public class TaskServicesImpl implements TaskServices {
         }
     }
 }
-
-

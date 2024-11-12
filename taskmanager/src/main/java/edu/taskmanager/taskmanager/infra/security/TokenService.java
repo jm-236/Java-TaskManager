@@ -14,24 +14,32 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+/**
+ * TokenService is a service class that provides methods for generating and validating JWT tokens.
+ */
 @Service
 public class TokenService {
 
     @Value("${api.security.token.secret}")
     private String secret;
 
-    // Método para gerar um token
+    /**
+     * Generates a JWT token for the given user.
+     * @param user - The user for whom the token is to be generated.
+     * @return the generated JWT token as a String.
+     * @throws RuntimeException if an error occurs while creating the token.
+     */
     public String generateToken(User user){
 
         try {
-            // Algoritmo que irá criptografar a informação
+            // Algorithm used to encrypt the information
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
-            // Criação do token
+            // Token creation
             String token = JWT.create()
-                    .withIssuer("taskmanager") // microserviço que está gerando o token
-                    .withSubject(user.getEmail()) // usuário que está gerando o token
-                    .withExpiresAt(this.generateExpirationDate()) // tempo de expiração do token;
+                    .withIssuer("taskmanager") // microservice generating the token
+                    .withSubject(user.getEmail()) // user generating the token
+                    .withExpiresAt(this.generateExpirationDate()) // token expiration time
                     .sign(algorithm);
 
             return token;
@@ -40,12 +48,20 @@ public class TokenService {
         }
     }
 
-    // Método para gerar a data de expiração do token
+    /**
+     * Generates the expiration date for the token.
+     * @return the expiration date as an Instant.
+     */
     private Instant generateExpirationDate() {
         ZonedDateTime zdt = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).plusSeconds(7200);
         return zdt.toInstant();
     }
 
+    /**
+     * Extracts the user's email from the given token.
+     * @param token - The JWT token.
+     * @return the user's email as a String.
+     */
     public String getUserEmailFromToken(String token) {
         if (token.startsWith("Bearer ")) {
             return validateToken(token.substring(7));
@@ -53,19 +69,23 @@ public class TokenService {
         return validateToken(token);
     }
 
-    // Método para validar o token
+    /**
+     * Validates the given JWT token.
+     * @param token - The JWT token to be validated.
+     * @return the subject (user's email) if the token is valid, or null if invalid.
+     */
     public String validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
-            // Conjunto de métodos que decodificam o token e retornam o objeto guardado nele(email do usuário)
+            // Methods to decode the token and return the stored object (user's email)
             return JWT.require(algorithm)
                     .withIssuer("taskmanager")
                     .build()
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException e) {
-            return null; // Se o token for inválido, o retorno é nulo e a autenticação falha
+            return null; // If the token is invalid, return null and authentication fails
         }
     }
 }
