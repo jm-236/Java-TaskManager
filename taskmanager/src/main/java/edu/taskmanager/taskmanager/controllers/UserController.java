@@ -3,7 +3,9 @@ package edu.taskmanager.taskmanager.controllers;
 import edu.taskmanager.taskmanager.domain.task.Task;
 import edu.taskmanager.taskmanager.dto.TaskDto;
 import edu.taskmanager.taskmanager.infra.security.TokenService;
+import edu.taskmanager.taskmanager.services.UserServices;
 import edu.taskmanager.taskmanager.services.impl.TaskServicesImpl;
+import edu.taskmanager.taskmanager.services.impl.UserServicesImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +29,9 @@ public class UserController {
     private TaskServicesImpl taskServices;
 
     @Autowired
+    private UserServicesImpl userServices;
+
+    @Autowired
     private TokenService tokenService;
 
     /**
@@ -40,6 +45,13 @@ public class UserController {
     @GetMapping
     public ResponseEntity<String> getUser() {
         return ResponseEntity.ok("SUCESSO!");
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
+        String email = tokenService.getUserEmailFromToken(authorizationHeader);
+        userServices.deleteUser(email);
+        return ResponseEntity.ok("User deleted");
     }
 
     /**
