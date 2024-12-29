@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation of the UserServices interface.
+ * Provides user-related operations such as deleting a user.
+ */
 @Service
 public class UserServicesImpl implements UserServices {
 
@@ -20,6 +24,12 @@ public class UserServicesImpl implements UserServices {
     @Autowired
     private TaskRepository taskRepository;
 
+    /**
+     * Deletes a user by their email.
+     * If the user has associated tasks, they are also deleted.
+     *
+     * @param email the email of the user to be deleted
+     */
     @Override
     public void deleteUser(String email) {
         Optional<User> userOpt = userRepository.findByEmail(email);
@@ -33,15 +43,5 @@ public class UserServicesImpl implements UserServices {
             }
             userRepository.delete(user);
         }
-    }
-
-    @Override
-    public void updatePassword() {
-
-    }
-
-    @Override
-    public void updateEmail() {
-
     }
 }

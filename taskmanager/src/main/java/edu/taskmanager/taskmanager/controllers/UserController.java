@@ -134,7 +134,15 @@ public class UserController {
         return ResponseEntity.ok("Task '" + taskName + "' deleted with sucess");
     }
 
-    // endpoint da solicitação pra redefinir a senha
+    /**
+     * Endpoint to request a password reset.
+     * It is annotated with @PostMapping, meaning it will respond to HTTP POST requests.
+     * When a POST request is made to "/user/password-reset", this method will be invoked.
+     * It sends a password reset email to the user based on the provided authorization token.
+     *
+     * @param authorizationHeader - The authorization token from the request header.
+     * @return a ResponseEntity with a success message and a HTTP status code of 200 (OK).
+     */
     @PostMapping("/password-reset")
     public ResponseEntity<String> resetPassword(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
         String email = tokenService.getUserEmailFromToken(authorizationHeader);
@@ -142,14 +150,23 @@ public class UserController {
         return ResponseEntity.ok("E-mail de redefinição enviado, verifique sua caixa de entrada.");
     }
 
+    /**
+     * Endpoint to reset the password using a token.
+     * It is annotated with @PostMapping, meaning it will respond to HTTP POST requests.
+     * When a POST request is made to "/user/reset/{token}", this method will be invoked.
+     * It updates the user's password based on the provided token, email, and new password.
+     *
+     * @param authorizationHeader - The authorization token from the request header.
+     * @param token - The password reset token.
+     * @param body - resetPasswordDto object that contains the new password.
+     * @return a ResponseEntity with a success message and a HTTP status code of 200 (OK).
+     */
     @PostMapping("/reset/{token}")
     public ResponseEntity<String> resetPassword(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
                                                 @PathVariable String token, @RequestBody resetPasswordDto body) {
 
         String email = tokenService.getUserEmailFromToken(authorizationHeader);
-        System.out.println(email);
-        System.out.println(token);
-        System.out.println(body.newPassword());
+
         passwordResetServices.updatePassword(token, email, body.newPassword());
         return ResponseEntity.ok("Senha redefinida com sucesso!");
     }

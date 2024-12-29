@@ -18,6 +18,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Implementation of the PasswordResetServices interface.
+ * Provides operations related to password reset functionality.
+ */
 @Service
 public class PasswordResetServicesImpl implements PasswordResetServices {
 
@@ -31,7 +35,7 @@ public class PasswordResetServicesImpl implements PasswordResetServices {
     private UserRepository userRepository;
 
     @Value("${app.reset-password.url}")
-    private String resetUrl; // URL base para redefinição de senha.
+    private String resetUrl; // URL base for password reset.
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -42,6 +46,11 @@ public class PasswordResetServicesImpl implements PasswordResetServices {
     @Value("${spring.mail.password}")
     private String senha;
 
+    /**
+     * Sends a password reset email to the specified email address.
+     *
+     * @param email the email address to send the reset email to
+     */
     @Override
     public void sendResetEmail(String email) {
         User user = userRepository.findByEmail(email)
@@ -65,6 +74,13 @@ public class PasswordResetServicesImpl implements PasswordResetServices {
         mailSender.send(emailMessage);
     }
 
+    /**
+     * Updates the password for the user associated with the given token and email.
+     *
+     * @param token the password reset token
+     * @param email the email address of the user
+     * @param password the new password to set
+     */
     @Override
     public void updatePassword(String token, String email, String password) {
         PasswordResetToken resetToken = tokenRepository.findByToken(token)
@@ -78,7 +94,7 @@ public class PasswordResetServicesImpl implements PasswordResetServices {
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
 
-        tokenRepository.delete(resetToken); // Exclui o token usado.
+        tokenRepository.delete(resetToken); // Deletes the used token.
 
     }
 }
