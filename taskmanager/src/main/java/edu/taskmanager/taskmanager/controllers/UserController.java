@@ -1,9 +1,13 @@
 package edu.taskmanager.taskmanager.controllers;
 
+import edu.taskmanager.taskmanager.domain.passwordResetToken.PasswordResetToken;
 import edu.taskmanager.taskmanager.domain.task.Task;
 import edu.taskmanager.taskmanager.dto.TaskDto;
+import edu.taskmanager.taskmanager.dto.resetPasswordDto;
 import edu.taskmanager.taskmanager.infra.security.TokenService;
+import edu.taskmanager.taskmanager.services.PasswordResetServices;
 import edu.taskmanager.taskmanager.services.UserServices;
+import edu.taskmanager.taskmanager.services.impl.PasswordResetServicesImpl;
 import edu.taskmanager.taskmanager.services.impl.TaskServicesImpl;
 import edu.taskmanager.taskmanager.services.impl.UserServicesImpl;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +37,9 @@ public class UserController {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private PasswordResetServicesImpl passwordResetServices;
 
     /**
      * This method is a simple GET endpoint.
@@ -125,5 +132,25 @@ public class UserController {
         String taskName = taskServices.getTaskName(taskId);
         taskServices.deleteTask(taskId);
         return ResponseEntity.ok("Task '" + taskName + "' deleted with sucess");
+    }
+
+    // endpoint da solicitação pra redefinir a senha
+    @PostMapping("/password-reset")
+    public ResponseEntity<String> resetPassword(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
+        String email = tokenService.getUserEmailFromToken(authorizationHeader);
+        passwordResetServices.sendResetEmail(email);
+        return ResponseEntity.ok("E-mail de redefinição enviado, verifique sua caixa de entrada.");
+    }
+
+    @PostMapping("/reset/{token}")
+    public ResponseEntity<String> resetPassword(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
+                                                @PathVariable String token, @RequestBody resetPasswordDto body) {
+
+        String email = tokenService.getUserEmailFromToken(authorizationHeader);
+        System.out.println(email);
+        System.out.println(token);
+        System.out.println(body.newPassword());
+        passwordResetServices.updatePassword(token, email, body.newPassword());
+        return ResponseEntity.ok("Senha redefinida com sucesso!");
     }
 }
