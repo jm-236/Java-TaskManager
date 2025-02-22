@@ -1,8 +1,3 @@
-FROM ubuntu:latest
-LABEL authors="joao"
-
-ENTRYPOINT ["top", "-b"]
-
 # Use uma imagem base com o JDK 21 instalado
 FROM eclipse-temurin:21-jdk-jammy
 
