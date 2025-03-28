@@ -7,12 +7,12 @@ function Cadastro() {
     return (
         <>
             <div className='min-h-screen flex items-center justify-center bg-gray-100 p-4'>
-                <h1 className='text-white display-1 pb-5'>Task Manager</h1>
+                <h1 className='text-white display-1 mb-3'>Task Manager</h1>
                 <div className='bg-dark rounded caixa container d-flex flex-column p-2 login-form clearfix'>
                     <button className="btn btn-dark py-2 item align-self-start arrow rounded-circle bg-transparent">
                         <ArrowLeft size={20} />
                     </button>
-                    <h1 className='text-white py-2'>Cadastro de usuário</h1>
+                    <h1 className='text-white mt-0 mb-3'>Cadastro de usuário</h1>
                     <input type="text" placeholder='Nome' className='text-white my-2 item align-self-center' />
                     <input type="text" placeholder='Email' className='text-white my-2 item align-self-center' />
                     <input type="password" placeholder='Senha' name="" id="" className='text-white my-2 item align-self-center' />
