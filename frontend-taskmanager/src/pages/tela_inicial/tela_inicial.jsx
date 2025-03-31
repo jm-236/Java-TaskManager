@@ -66,8 +66,9 @@ const TelaInicial = () => {
             <Col key={task.id}>
               <Card className="shadow-sm bg-dark">
                 <Card.Body>
-                  <div className="d-flex justify-content-between mb-2">
+                  <div className="d-flex justify-content-between align-items mb-2">
                     <small className="text-white">{task.date}</small>
+                    <small className='text-success'>{task.status}</small>
                     <small className="text-white">{task.category}</small>
                   </div>
                   <Card.Title className='text-primary'>{task.title}</Card.Title>
