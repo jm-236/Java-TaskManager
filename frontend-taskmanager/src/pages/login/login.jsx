@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 
@@ -56,6 +57,7 @@ function TelaLogin() {
                 />
 
                 <a href="" className='text-white text-sm text-decoration-underline'>Esqueci minha senha</a>
+                <Link className='text-white text-sm text-decoration-underline' to='/register'>Realizar cadastro</Link>
 
                 {erro && <div className='text-danger mt-2'>{erro}</div>}
 
