@@ -12,7 +12,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import edu.taskmanager.taskmanager.domain.user.User;
 import edu.taskmanager.taskmanager.repositories.UserRepository;
@@ -40,6 +42,19 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
+        // Lista de paths que devem ser ignorados pelo filtro de segurança
+        List<String> publicPaths = Arrays.asList("/auth/login", "/auth/register", "/h2-console");
+
+        String path = request.getRequestURI();
+
+        // Se o path da requisição está na lista de paths públicos,
+        // simplesmente continue a cadeia de filtros sem fazer nenhuma validação de token.
+        if (publicPaths.stream().anyMatch(p -> path.startsWith(p))) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         var token = this.recoverToken(request);
         var login = tokenService.validateToken(token); // validates the recovered token (returns the email)
 
