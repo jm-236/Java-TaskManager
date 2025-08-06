@@ -14,8 +14,10 @@ export const AuthProvider = ({ children }) => {
         const checkAuthStatus = async () => {
             try {
                 // Pergunta ao backend se o usuário está logado
-                await api.get('/auth/status', { withCredentials: true });
-                setIsAuthenticated(true); // Se a chamada deu 200 OK, está logado
+                await api.get('/auth/status', { withCredentials: true }).then(
+                    setIsAuthenticated(true)// Se a chamada deu 200 OK, está logado
+                );
+                 
             } catch (error) {
                 setIsAuthenticated(false); // Se deu erro (401, etc), não está logado
             } finally {

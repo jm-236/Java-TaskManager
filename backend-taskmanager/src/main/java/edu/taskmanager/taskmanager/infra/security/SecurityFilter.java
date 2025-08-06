@@ -2,6 +2,7 @@ package edu.taskmanager.taskmanager.infra.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             return;
         }
 
-        var token = this.recoverToken(request);
+        var token = this.recoverTokenFromCookie(request);
         var login = tokenService.validateToken(token); // validates the recovered token (returns the email)
 
         if(login != null){
@@ -77,10 +78,22 @@ public class SecurityFilter extends OncePerRequestFilter {
      * @param request - The HttpServletRequest object.
      * @return the token as a String.
      */
-    private String recoverToken(HttpServletRequest request){
+    private String recoverTokenFromAuthHeader(HttpServletRequest request){
         // method that returns the token from the request header
         var authHeader = request.getHeader("Authorization");
         if(authHeader == null) return null;
         return authHeader.replace("Bearer ", "");
+    }
+
+    private String recoverTokenFromCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("JWTCookie".equals(cookie.getName())) {
+                    return "Bearer " + cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 }

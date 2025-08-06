@@ -45,6 +45,7 @@ public class SecurityConfig {
                         // liberação dos endpoints de login e registro para cadastro e login dos usuários
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/auth/status").permitAll()
                         .requestMatchers("/h2-console/**").permitAll() // acesso ao console do banco de dados
                         // para qualquer outra camada ele deve estar autenticado
                         .anyRequest().authenticated()
