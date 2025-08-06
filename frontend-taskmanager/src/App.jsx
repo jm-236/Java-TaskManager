@@ -11,6 +11,8 @@ import TelaInicial from './pages/tela_inicial/tela_inicial.jsx'
 import NovaTarefa from './pages/nova_tarefa/nova_tarefa.jsx'
 import VisualizarTarefa from './pages/visualizar_tarefa/visualizar_tarefa.jsx'
 import VisualizarPerfil from './pages/visualizar_perfil/visualizar_perfil.jsx'
+import RotaProtegida from './components/RotaProtegida.jsx'
+import { Navigate } from 'react-router-dom'
 
 function App() {
   
@@ -19,15 +21,48 @@ function App() {
    
     <BrowserRouter>
       <Routes>
+          <Route path='/login' element={ <TelaLogin />} />
           <Route path='/register' element={ <Cadastro />} />
-          <Route path='/esqueci_minha_senha' element={ <MudarSenha />} />
-          <Route path='/redefinir_senha' element={ <NovaSenha />} />
-          <Route path='/login' element={ <TelaLogin />} />
-          <Route path='/login' element={ <TelaLogin />} />
-          <Route path='/inicio' element={ <TelaInicial />} />
-          <Route path='/criar_tarefa' element={ <NovaTarefa />} />
-          <Route path='/tarefa' element={ <VisualizarTarefa />} />
-          <Route path='/perfil' element={ <VisualizarPerfil />} />
+          
+          {/* Rotas protegidas */}
+          <Route path='/esqueci_minha_senha' 
+            element={ 
+              <RotaProtegida>
+                <MudarSenha />
+              </RotaProtegida>} 
+          />
+          <Route path='/redefinir_senha' 
+          element={ 
+              <RotaProtegida>
+                <NovaSenha />
+              </RotaProtegida>} 
+          />
+          
+          <Route path='/inicio' element={ 
+              <RotaProtegida>
+                <TelaInicial />
+              </RotaProtegida>} 
+          />
+          
+          <Route path='/criar_tarefa' element={ 
+              <RotaProtegida>
+                <NovaTarefa />
+              </RotaProtegida>} 
+          />
+          
+          <Route path='/tarefa' element={ 
+              <RotaProtegida>
+                <VisualizarTarefa />
+              </RotaProtegida>} 
+          />
+          
+          <Route path='/perfil' element={ 
+              <RotaProtegida>
+                <VisualizarPerfil />
+              </RotaProtegida>} 
+          />
+          
+          <Route path="/" element={<Navigate to="/login" />} />
       </Routes>
     </BrowserRouter>
 

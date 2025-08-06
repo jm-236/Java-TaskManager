@@ -1,10 +1,7 @@
 package edu.taskmanager.taskmanager.controllers;
 
 import edu.taskmanager.taskmanager.domain.user.User;
-import edu.taskmanager.taskmanager.dto.BadRegisterDto;
-import edu.taskmanager.taskmanager.dto.LoginRequestDto;
-import edu.taskmanager.taskmanager.dto.RegisterRequestDto;
-import edu.taskmanager.taskmanager.dto.ResponseDto;
+import edu.taskmanager.taskmanager.dto.*;
 import edu.taskmanager.taskmanager.infra.security.TokenService;
 import edu.taskmanager.taskmanager.repositories.UserRepository;
 import jakarta.servlet.http.Cookie;
@@ -15,10 +12,7 @@ import edu.taskmanager.taskmanager.infra.security.SecurityConfig;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -92,5 +86,19 @@ public class AuthController {
         return ResponseEntity.badRequest().body(new BadRegisterDto(
                 "Usuário com email " + body.email() + " já cadastrado no sistema."
         ));
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity getUserStatus(@CookieValue("JWTCookie") String token) {
+
+        String email = jwtTokenProvider.getUserEmailFromToken(token);
+
+        if (email.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.OK).body(new IsLoggedDto(email));
+        }
+
     }
 }
