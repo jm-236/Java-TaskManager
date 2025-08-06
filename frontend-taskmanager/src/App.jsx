@@ -13,15 +13,21 @@ import VisualizarTarefa from './pages/visualizar_tarefa/visualizar_tarefa.jsx'
 import VisualizarPerfil from './pages/visualizar_perfil/visualizar_perfil.jsx'
 
 function App() {
-  const [count, setCount] = useState(0)
+  
 
   return (
    
     <BrowserRouter>
       <Routes>
           <Route path='/register' element={ <Cadastro />} />
+          <Route path='/esqueci_minha_senha' element={ <MudarSenha />} />
+          <Route path='/redefinir_senha' element={ <NovaSenha />} />
           <Route path='/login' element={ <TelaLogin />} />
-          <Route path='/' element={ <TelaLogin />} />
+          <Route path='/login' element={ <TelaLogin />} />
+          <Route path='/inicio' element={ <TelaInicial />} />
+          <Route path='/criar_tarefa' element={ <NovaTarefa />} />
+          <Route path='/tarefa' element={ <VisualizarTarefa />} />
+          <Route path='/perfil' element={ <VisualizarPerfil />} />
       </Routes>
     </BrowserRouter>
 

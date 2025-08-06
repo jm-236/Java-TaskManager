@@ -1,5 +1,4 @@
 package edu.taskmanager.taskmanager.dto;
 
-public record ResponseDto(String name) {
-
+public record BadRegisterDto (String erro){
 }

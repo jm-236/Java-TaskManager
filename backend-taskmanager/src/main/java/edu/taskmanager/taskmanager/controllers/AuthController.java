@@ -1,15 +1,18 @@
 package edu.taskmanager.taskmanager.controllers;
 
 import edu.taskmanager.taskmanager.domain.user.User;
+import edu.taskmanager.taskmanager.dto.BadRegisterDto;
 import edu.taskmanager.taskmanager.dto.LoginRequestDto;
 import edu.taskmanager.taskmanager.dto.RegisterRequestDto;
 import edu.taskmanager.taskmanager.dto.ResponseDto;
 import edu.taskmanager.taskmanager.infra.security.TokenService;
 import edu.taskmanager.taskmanager.repositories.UserRepository;
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import edu.taskmanager.taskmanager.infra.security.TokenService;
 import edu.taskmanager.taskmanager.infra.security.SecurityConfig;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,7 +51,7 @@ public class AuthController {
 
         if (passwordEncoder.matches(body.password(), usuario.getPassword())) {
             String token = this.jwtTokenProvider.generateToken(usuario);
-            return ResponseEntity.ok(new ResponseDto(usuario.getName(), token));
+            return ResponseEntity.ok(new ResponseDto(usuario.getName()));
         }
         return ResponseEntity.badRequest().build();
     }
@@ -74,9 +77,20 @@ public class AuthController {
             this.userRepository.save(novoUsuario);
 
             String token = this.jwtTokenProvider.generateToken(novoUsuario);
-            return ResponseEntity.ok(new ResponseDto(novoUsuario.getName(), token));
+            Cookie cookie = new Cookie("JWTCookie", token);
+            cookie.setPath("/"); // Define o caminho do cookie
+            cookie.setMaxAge(7200); // Define a idade do cookie em segundos (1 dia)
+            cookie.setHttpOnly(true); // Torna o cookie inacessível por scripts JavaScript
+
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .header("Set-Cookie", String.format("%s=%s; Path=%s; Max-Age=%d; HttpOnly",
+                    cookie.getName(), cookie.getValue(), cookie.getPath(), cookie.getMaxAge()))
+                    .body(new ResponseDto(novoUsuario.getName()));
         }
 
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.badRequest().body(new BadRegisterDto(
+                "Usuário com email " + body.email() + " já cadastrado no sistema."
+        ));
     }
 }

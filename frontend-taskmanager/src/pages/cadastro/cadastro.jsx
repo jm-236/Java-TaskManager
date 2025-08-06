@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
+import api from '../../services/api';
 
 function Cadastro() {
 
@@ -36,27 +37,39 @@ function Cadastro() {
                 'email': email
             }
 
-            const resposta = await fetch('http://localhost:8080/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(novoUser),
-            })
+            await api.post('/auth/register', novoUser, { withCredentials: true})
+            .then(
+                resposta => {
+                    const nome = resposta.data.name
+                    console.log('Usuário novo cadastrado:', nome)
+                    // evoluir pra exibir um pop-up na tela depois
 
-            if (!resposta.ok) {
-                throw new Error('Login inválido')
-            }
+                }
+            )
+            .catch(
+                error => {
+                    if (error.response) {
 
-            const dados = await resposta.json()
-            console.log('Token recebido:', dados.token)
+                        if (error.response.status === 400) {
+                            setErro(error.response.data.erro)
+                        }
+                    } else if (error.request) {
+                        // A requisição foi feita, mas não houve resposta
+                        console.log(error.request);
+                        setErro("Erro durante realização do Cadastro.")
+                    } else {
+                        // Algum erro ocorreu durante a configuração da requisição
+                        console.log('Error', error.message);
+                        setErro("Erro desconhecido.")
+                    }
+                }
+            )
 
-            // Armazena o token, redireciona, etc.
-            localStorage.setItem('token', dados.token)
-            // window.location.href = '/home' // ou outra rota
+            // window.location.href = '/inicio' // ou outra rota
 
         } catch (err) {
-            setErro(err.message)
+            console.log(err)
+            setErro("Erro desconhecido.")
         }
     }
 
