@@ -9,6 +9,7 @@ import edu.taskmanager.taskmanager.repositories.UserRepository;
 import edu.taskmanager.taskmanager.services.TaskServices;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,16 +21,14 @@ import java.util.Optional;
  * It implements the TaskServices interface.
  */
 @Service
+@RequiredArgsConstructor
 public class TaskServicesImpl implements TaskServices {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
 
-    @Autowired
-    TokenService tokenService;
+    private final TokenService tokenService;
 
     /**
      * Lists all tasks associated with the user identified by the authorization token.

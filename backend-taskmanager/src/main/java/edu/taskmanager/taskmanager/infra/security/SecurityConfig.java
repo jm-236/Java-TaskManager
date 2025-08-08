@@ -1,5 +1,6 @@
 package edu.taskmanager.taskmanager.infra.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,13 +22,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration // Indica que essa é uma classe de configuração e deve ser inicializada durante a inicialização
               // do aplicativo
 @EnableWebSecurity // Classe que cuida da configuração de segurança do aplicativo web
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
-    @Autowired
-    SecurityFilter securityFilter; // filtro nas requisicoes que devem ser autenticadas
+
+    final SecurityFilter securityFilter; // filtro nas requisicoes que devem ser autenticadas
 
     /**
      * This method configures the security filter chain with custom settings.

@@ -29,17 +29,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private TaskServicesImpl taskServices;
+    private final TaskServicesImpl taskServices;
 
-    @Autowired
-    private UserServicesImpl userServices;
+    private final UserServicesImpl userServices;
 
-    @Autowired
-    private TokenService tokenService;
+    private final TokenService tokenService;
 
-    @Autowired
-    private PasswordResetServicesImpl passwordResetServices;
+    private final PasswordResetServicesImpl passwordResetServices;
 
     /**
      * This method is a simple GET endpoint.

@@ -5,6 +5,7 @@ import edu.taskmanager.taskmanager.domain.user.User;
 import edu.taskmanager.taskmanager.repositories.PasswordResetTokenRepository;
 import edu.taskmanager.taskmanager.repositories.UserRepository;
 import edu.taskmanager.taskmanager.services.PasswordResetServices;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
@@ -23,15 +24,13 @@ import java.util.UUID;
  * Provides operations related to password reset functionality.
  */
 @Service
+@RequiredArgsConstructor
 public class PasswordResetServicesImpl implements PasswordResetServices {
 
-    @Autowired
     private PasswordResetTokenRepository tokenRepository;
 
-    @Autowired
     private JavaMailSender mailSender;
 
-    @Autowired
     private UserRepository userRepository;
 
     @Value("${app.reset-password.url}")

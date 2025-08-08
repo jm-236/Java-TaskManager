@@ -5,6 +5,7 @@ import edu.taskmanager.taskmanager.domain.user.User;
 import edu.taskmanager.taskmanager.repositories.TaskRepository;
 import edu.taskmanager.taskmanager.repositories.UserRepository;
 import edu.taskmanager.taskmanager.services.UserServices;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +17,13 @@ import java.util.Optional;
  * Provides user-related operations such as deleting a user.
  */
 @Service
+@RequiredArgsConstructor
 public class UserServicesImpl implements UserServices {
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private TaskRepository taskRepository;
+    private final UserRepository userRepository;
+
+    private final TaskRepository taskRepository;
 
     /**
      * Deletes a user by their email.

@@ -2,6 +2,7 @@ package edu.taskmanager.taskmanager.infra.security;
 
 import edu.taskmanager.taskmanager.domain.user.User;
 import edu.taskmanager.taskmanager.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,10 +16,10 @@ import java.util.ArrayList;
  * This class is used to load user-specific data during security authentication.
  */
 @Service
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository repository;
+    private final UserRepository repository;
 
     /**
      * This method is used to load user data by username.
