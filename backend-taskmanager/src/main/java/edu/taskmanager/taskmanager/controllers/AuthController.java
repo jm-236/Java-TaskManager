@@ -45,7 +45,15 @@ public class AuthController {
 
         if (passwordEncoder.matches(body.password(), usuario.getPassword())) {
             String token = this.jwtTokenProvider.generateToken(usuario);
-            return ResponseEntity.ok(new ResponseDto(usuario.getName()));
+            Cookie cookie = new Cookie("JWTCookie", token);
+            cookie.setPath("/");
+            cookie.setMaxAge(7200);
+            cookie.setHttpOnly(true);
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .header("Set-Cookie", String.format("%s=%s; Path=%s; Max-Age=%d; HttpOnly",
+                            cookie.getName(), cookie.getValue(), cookie.getPath(), cookie.getMaxAge()))
+                    .body(new ResponseDto(usuario.getName()));
         }
         return ResponseEntity.badRequest().build();
     }
