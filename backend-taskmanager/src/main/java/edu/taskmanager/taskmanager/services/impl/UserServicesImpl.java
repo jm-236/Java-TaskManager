@@ -2,11 +2,14 @@ package edu.taskmanager.taskmanager.services.impl;
 
 import edu.taskmanager.taskmanager.domain.task.Task;
 import edu.taskmanager.taskmanager.domain.user.User;
+import edu.taskmanager.taskmanager.infra.security.TokenService;
 import edu.taskmanager.taskmanager.repositories.TaskRepository;
 import edu.taskmanager.taskmanager.repositories.UserRepository;
 import edu.taskmanager.taskmanager.services.UserServices;
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +25,9 @@ public class UserServicesImpl implements UserServices {
 
 
     private final UserRepository userRepository;
-
     private final TaskRepository taskRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final TokenService jwtTokenProvider;
 
     /**
      * Deletes a user by their email.
