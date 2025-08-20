@@ -86,7 +86,7 @@ function Cadastro() {
                         </Link>
                     </button>
                     
-                    <h1 className='text-white mt-0 mb-3'>Cadastro de usuário</h1>
+                    <h1 className='text-white mt-0 mb-3 px-5'>Cadastro de usuário</h1>
                     
                     <input 
                         type="text" 
