@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
+import api from '../../services/api';
 
 function TelaLogin() {
     const [email, setEmail] = useState('')
@@ -10,24 +11,35 @@ function TelaLogin() {
 
     const handleLogin = async () => {
         try {
-            const resposta = await fetch('http://localhost:8080/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, senha }),
-            })
+            
+            const usuario = { 'email': email, 'password': senha }
 
-            if (!resposta.ok) {
-                throw new Error('Login inválido')
-            }
+            api.post('auth/login', usuario, {withCredentials: true})
+            .then(
+                resposta => {
+                    console.log("Status recebido: " + resposta.status)
+                    console.log("Dados recebidos: " + resposta.data)
+                }
+            ) 
+            .catch(
+                error => {
+                    if (error.response) {
 
-            const dados = await resposta.json()
-            console.log('Token recebido:', dados.token)
-
-            // Armazena o token, redireciona, etc.
-            localStorage.setItem('token', dados.token)
-            window.location.href = '/home' // ou outra rota
+                        if (error.response.status === 400) {
+                            setErro(error.response.data.erro)
+                        }
+                    } else if (error.request) {
+                        // A requisição foi feita, mas não houve resposta
+                        console.log(error.request);
+                        setErro("Erro durante realização do Cadastro.")
+                    } else {
+                        // Algum erro ocorreu durante a configuração da requisição
+                        console.log('Error', error.message);
+                        setErro("Erro desconhecido.")
+                    }
+                }
+            )
+            
 
         } catch (err) {
             setErro(err.message)
