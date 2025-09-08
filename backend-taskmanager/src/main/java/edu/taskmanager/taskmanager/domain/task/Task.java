@@ -10,6 +10,7 @@ import lombok.Setter;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Task is an entity that represents a task in the system.
@@ -31,6 +32,9 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String Id; // id: identificador da tarefa
+
+    @Column(unique = true, nullable = false, updatable = false)
+    private UUID uuid; // Identificador PÚBLICO
 
     /**
      * The user who created the task.
@@ -80,5 +84,12 @@ public class Task {
                 ", createdDate=" + createdDate +
                 ", category='" + category + '\'' +
                 '}';
+    }
+
+    @PrePersist
+    public void generateUuid() {
+        if (this.uuid == null) {
+            this.uuid = UUID.randomUUID();
+        }
     }
 }

@@ -61,7 +61,7 @@ public class UserController {
      * @return a ResponseEntity with the list of tasks and a HTTP status code of 200 (OK).
      */
     @GetMapping("/tasks")
-    public ResponseEntity getTasks(Authentication authentication) {
+    public ResponseEntity<?> getTasks(Authentication authentication) {
         if (authentication == null) {
             return ResponseEntity.badRequest().body("Token não encontrado");
         }
