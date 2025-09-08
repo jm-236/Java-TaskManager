@@ -60,7 +60,6 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         var token = this.recoverTokenFromCookie(request);
         var login = tokenService.validateToken(token); // validates the recovered token (returns the email)
-
         if(login != null){
             // Fetch the user from the database
             User user = userRepository.findByEmail(login).orElseThrow(() -> new RuntimeException("User Not Found"));
@@ -76,23 +75,16 @@ public class SecurityFilter extends OncePerRequestFilter {
     }
 
     /**
-     * Retrieves the token from the request header.
+     * Retrieves the token from the request Cookie.
      * @param request - The HttpServletRequest object.
      * @return the token as a String.
      */
-    private String recoverTokenFromAuthHeader(HttpServletRequest request){
-        // method that returns the token from the request header
-        var authHeader = request.getHeader("Authorization");
-        if(authHeader == null) return null;
-        return authHeader.replace("Bearer ", "");
-    }
-
     private String recoverTokenFromCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("JWTCookie".equals(cookie.getName())) {
-                    return "Bearer " + cookie.getValue();
+                    return cookie.getValue();
                 }
             }
         }

@@ -3,11 +3,20 @@ import { Link } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 import api from '../../services/api';
-
 function TelaLogin() {
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
     const [erro, setErro] = useState(null)
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const [popupMessage, setPopupMessage] = useState('');
+
+    const fecharPopup = () => {
+        setIsPopupVisible(false);
+        // Redireciona para a página inicial após fechar o pop-up de sucesso
+        if (popupMessage.includes('sucesso')) {
+            window.location.href = '/inicio';
+        }
+    };
 
     const handleLogin = async () => {
         try {
@@ -17,8 +26,11 @@ function TelaLogin() {
             api.post('auth/login', usuario, {withCredentials: true})
             .then(
                 resposta => {
-                    console.log("Status recebido: " + resposta.status)
-                    console.log("Dados recebidos: " + resposta.data)
+                    const nome = resposta.data.name
+                    console.log('Usuário logado:', nome)
+                    setPopupMessage(`Usuário ${nome} logado com sucesso!`);
+                    setIsPopupVisible(true);
+                    // window.location.href = '/inicio'
                 }
             ) 
             .catch(
@@ -47,6 +59,7 @@ function TelaLogin() {
     }
 
     return (
+        <>
         <div className='min-h-screen flex bg-gray-100 p-4'>
             <h1 className='text-white display-1 pb-5 item align-self-center'>Task Manager</h1>
             <div className='bg-dark rounded container d-flex flex-column py-5 login-form item align-self-center'>
@@ -81,6 +94,19 @@ function TelaLogin() {
                 </button>
             </div>
         </div>
+
+        {/* Pop-up condicional */}
+        {isPopupVisible && (
+            <div className="popup-overlay">
+                <div className="popup-content">
+                    <h2>Aviso!</h2>
+                    <p>{popupMessage}</p>
+                    <button className='btn btn-sm btn-primary color-white' onClick={fecharPopup}>Fechar</button>
+                </div>
+            </div>
+        )}
+        </>
+        
     )
 }
 

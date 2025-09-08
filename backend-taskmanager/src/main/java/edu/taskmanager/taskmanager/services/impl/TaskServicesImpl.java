@@ -8,13 +8,20 @@ import edu.taskmanager.taskmanager.repositories.TaskRepository;
 import edu.taskmanager.taskmanager.repositories.UserRepository;
 import edu.taskmanager.taskmanager.services.TaskServices;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * TaskServicesImpl is a service implementation class that provides methods for managing tasks.
@@ -32,55 +39,45 @@ public class TaskServicesImpl implements TaskServices {
 
     /**
      * Lists all tasks associated with the user identified by the authorization token.
-     * @param authorizationHeader - The authorization token from the request header.
+     * @param authentication - The authentication status.
      * @return a list of tasks associated with the user.
      * @throws EntityNotFoundException if the user is not found.
      */
     @Override
-    public List<Task> listAllTasks(String authorizationHeader) {
+    public List<TaskDto> listAllTasks(Authentication authentication) {
 
-        String userEmail = tokenService.getUserEmailFromToken(authorizationHeader);
+        User user = (User) authentication.getPrincipal();
 
-        Optional<User> userOpt = userRepository.findByEmail(userEmail);
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            Optional<List<Task>> listOpt = taskRepository.findByUser(user);
-            if (listOpt.isPresent()){
-                return listOpt.get();
-            }
-            return null;
+        Optional<List<Task>> listOpt = taskRepository.findByUser(user);
+        if (listOpt.isPresent()){
+            return listOpt.get().stream().map(TaskDto::new)
+                    .collect(Collectors.toList());
         }
-        throw new EntityNotFoundException("User not found with email " + userEmail);
+        return Collections.emptyList();
+//        throw new EntityNotFoundException("User not found with email " + userEmail);
     }
 
     /**
      * Saves a new task based on the provided TaskDto and authorization token.
      * @param taskDto - TaskDto object that contains the task details.
-     * @param authHeader - The authorization token from the request header.
      * @throws EntityNotFoundException if the user is not found.
      */
     @Override
-    public void saveTask(TaskDto taskDto, String authHeader) {
+    public void saveTask(TaskDto taskDto, Authentication authentication) {
 
-        String email = tokenService.getUserEmailFromToken(authHeader);
+        try {
+            User user = (User) authentication.getPrincipal();
 
-        Task newTask = new Task();
-        newTask.setTitle(taskDto.title());
-        newTask.setDescription(taskDto.description());
-        newTask.setStatus(taskDto.status());
-        newTask.setCategory(taskDto.category());
-        newTask.setCreatedDate(taskDto.createdDate());
-
-        Optional<User> userOpt = userRepository.findByEmail(email);
-
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
+            Task newTask = new Task();
+            newTask.setTitle(taskDto.title());
+            newTask.setDescription(taskDto.description());
+            newTask.setStatus(taskDto.status());
+            newTask.setCategory(taskDto.category());
+            newTask.setCreatedDate(taskDto.createdDate());
             newTask.setUser(user);
             taskRepository.save(newTask);
-
-        }
-        else {
-            throw new EntityNotFoundException("User not found with email " + email);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -157,5 +154,17 @@ public class TaskServicesImpl implements TaskServices {
         else {
             throw new EntityNotFoundException("Task not found with id " + taskId);
         }
+    }
+
+    private String recoverTokenFromCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("JWTCookie".equals(cookie.getName())) {
+                    return "Bearer " + cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 }

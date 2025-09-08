@@ -13,6 +13,9 @@ function Cadastro() {
     const[senhaConfirmacao, setSenhaConfirmacao] = useState('')
     const [erro, setErro] = useState(null)
 
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const [popupMessage, setPopupMessage] = useState('');
+
     const handleCadastro = async () => {
         try {
             if (name == ''){
@@ -43,7 +46,10 @@ function Cadastro() {
                     const nome = resposta.data.name
                     console.log('Usuário novo cadastrado:', nome)
                     // evoluir pra exibir um pop-up na tela depois
+                    setPopupMessage(`Usuário ${nome} cadastrado com sucesso!`);
+                    setIsPopupVisible(true);
 
+                    // window.location.href = '/inicio'    
                 }
             )
             .catch(
@@ -65,14 +71,19 @@ function Cadastro() {
                 }
             )
 
-            // window.location.href = '/inicio' // ou outra rota
-
         } catch (err) {
             console.log(err)
             setErro("Erro desconhecido.")
         }
     }
 
+    const fecharPopup = () => {
+        setIsPopupVisible(false);
+        // Redireciona para a página inicial após fechar o pop-up de sucesso
+        if (popupMessage.includes('sucesso')) {
+            window.location.href = '/inicio';
+        }
+    };
 
     return (
         <>
@@ -80,11 +91,11 @@ function Cadastro() {
                 <h1 className='text-white display-1 mb-3'>Task Manager</h1>
                 <div className='bg-dark rounded caixa container d-flex flex-column p-2 login-form clearfix'>
                     
-                    <button className="btn btn-dark py-2 item align-self-start arrow rounded-circle bg-transparent">
-                        <Link to='/login'>
-                        <ArrowLeft size={20} />
+                    {/* <button className="btn btn-dark py-2 item align-self-start arrow rounded-circle bg-transparent"> */}
+                        <Link to='/login' className='py-2 item align-self-start rounded-circle'>
+                        <ArrowLeft size={20} color='white' />
                         </Link>
-                    </button>
+                    {/* </button> */}
                     
                     <h1 className='text-white mt-0 mb-3 px-5'>Cadastro de usuário</h1>
                     
@@ -124,6 +135,17 @@ function Cadastro() {
                     >Realizar cadastro</button>
                 </div>
             </div>
+
+            {/* Pop-up condicional */}
+            {isPopupVisible && (
+                <div className="popup-overlay">
+                    <div className="popup-content">
+                        <h2>Aviso!</h2>
+                        <p>{popupMessage}</p>
+                        <button className='btn btn-sm btn-primary color-white' onClick={fecharPopup}>Fechar</button>
+                    </div>
+                </div>
+            )}
         </>
     )
 }

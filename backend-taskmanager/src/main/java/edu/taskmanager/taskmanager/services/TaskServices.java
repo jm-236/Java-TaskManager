@@ -2,6 +2,7 @@ package edu.taskmanager.taskmanager.services;
 
 import edu.taskmanager.taskmanager.domain.task.Task;
 import edu.taskmanager.taskmanager.dto.TaskDto;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,14 +15,14 @@ public interface TaskServices {
      * @param userId - The ID of the user whose tasks are to be listed.
      * @return an Iterable containing all tasks associated with the user.
      */
-    Iterable<Task> listAllTasks(String userId);
+    Iterable<TaskDto> listAllTasks(Authentication authentication);
 
     /**
      * Saves a new task based on the provided TaskDto and authorization token.
      * @param taskdto - TaskDto object that contains the task details.
      * @param authHeader - The authorization token from the request header.
      */
-    void saveTask(TaskDto taskdto, String authHeader);
+    void saveTask(TaskDto taskdto, Authentication authentication);
 
     /**
      * Deletes a task identified by the task ID.

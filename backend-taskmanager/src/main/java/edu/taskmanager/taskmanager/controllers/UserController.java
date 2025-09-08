@@ -1,20 +1,16 @@
 package edu.taskmanager.taskmanager.controllers;
 
-import edu.taskmanager.taskmanager.domain.passwordResetToken.PasswordResetToken;
-import edu.taskmanager.taskmanager.domain.task.Task;
 import edu.taskmanager.taskmanager.dto.TaskDto;
 import edu.taskmanager.taskmanager.dto.resetPasswordDto;
 import edu.taskmanager.taskmanager.infra.security.TokenService;
-import edu.taskmanager.taskmanager.services.PasswordResetServices;
-import edu.taskmanager.taskmanager.services.UserServices;
 import edu.taskmanager.taskmanager.services.impl.PasswordResetServicesImpl;
 import edu.taskmanager.taskmanager.services.impl.TaskServicesImpl;
 import edu.taskmanager.taskmanager.services.impl.UserServicesImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -62,17 +58,16 @@ public class UserController {
      * It is annotated with @GetMapping, meaning it will respond to HTTP GET requests.
      * When a GET request is made to "/user/tasks", this method will be invoked.
      * It retrieves a list of tasks associated with the user based on the provided authorization token.
-     * @param authorizationHeader - The authorization token from the request header.
      * @return a ResponseEntity with the list of tasks and a HTTP status code of 200 (OK).
      */
     @GetMapping("/tasks")
-    public ResponseEntity<String> getTasks(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
-        if (authorizationHeader == null) {
-            return ResponseEntity.ok("Token não encontrado");
+    public ResponseEntity getTasks(Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.badRequest().body("Token não encontrado");
         }
 
-        List<Task> tasks = taskServices.listAllTasks(authorizationHeader);
-        return new ResponseEntity<>(tasks.toString(), HttpStatus.OK);
+        List<TaskDto> tasks = taskServices.listAllTasks(authentication);
+        return ResponseEntity.status(HttpStatus.OK).body(tasks);
     }
 
     /**
@@ -81,17 +76,16 @@ public class UserController {
      * When a POST request is made to "/user/tasks", this method will be invoked.
      * It creates a new task based on the provided TaskDto and authorization token.
      * @param body - TaskDto object that contains the task details.
-     * @param authorizationHeader - The authorization token from the request header.
      * @return a ResponseEntity with a success message and a HTTP status code of 200 (OK).
      */
     @PostMapping("/tasks")
-    public ResponseEntity<String> createTask(@RequestBody TaskDto body, @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader){
-        if (authorizationHeader == null) {
-            return ResponseEntity.ok("Token não encontrado");
+    public ResponseEntity<String> createTask(@RequestBody TaskDto body, Authentication authentication){
+        if (authentication == null) {
+            return ResponseEntity.badRequest().body("Token não encontrado");
         }
 
-        taskServices.saveTask(body, authorizationHeader);
-        return ResponseEntity.ok("Task created!");
+        taskServices.saveTask(body, authentication);
+        return ResponseEntity.ok("Task created with success!");
     }
 
     /**
