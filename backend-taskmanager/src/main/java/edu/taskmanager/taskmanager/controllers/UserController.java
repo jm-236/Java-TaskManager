@@ -116,9 +116,9 @@ public class UserController {
      * @return a ResponseEntity with a success message and a HTTP status code of 200 (OK).
      */
     @DeleteMapping("/tasks/{taskId}")
-    public ResponseEntity<String> deleteTask(@PathVariable String taskId){
+    public ResponseEntity<String> deleteTask(@PathVariable UUID taskId, Authentication authentication){
         String taskName = taskServices.getTaskName(taskId);
-        taskServices.deleteTask(taskId);
+        taskServices.deleteTask(taskId, authentication);
         return ResponseEntity.ok("Task '" + taskName + "' deleted with sucess");
     }
 

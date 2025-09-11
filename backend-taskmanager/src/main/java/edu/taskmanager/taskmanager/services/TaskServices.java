@@ -30,7 +30,7 @@ public interface TaskServices {
      * Deletes a task identified by the task ID.
      * @param taskId - The ID of the task to be deleted.
      */
-    void deleteTask(String taskId);
+    void deleteTask(UUID taskId, Authentication authentication);
 
     /**
      * Updates an existing task based on the provided TaskDto, taskId, and authorization token.
@@ -45,5 +45,5 @@ public interface TaskServices {
      * @param taskId - The ID of the task.
      * @return the name of the task.
      */
-    String getTaskName(String taskId);
+    String getTaskName(UUID taskId);
 }

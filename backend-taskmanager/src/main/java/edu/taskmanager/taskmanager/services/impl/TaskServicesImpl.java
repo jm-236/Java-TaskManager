@@ -88,14 +88,18 @@ public class TaskServicesImpl implements TaskServices {
      */
     @Override
     @Transactional
-    public void deleteTask(String taskId) {
+    public void deleteTask(UUID taskId, Authentication authentication) {
 
-        Optional<Task> taskOpt = taskRepository.findById(taskId);
+        Optional<Task> taskOpt = taskRepository.findByUuid(taskId);
+        User user = (User) authentication.getPrincipal();
 
         if (taskOpt.isPresent()){
             Task task = taskOpt.get();
-            User user = task.getUser();
-            user.removeTask(task);
+            User taskUser = task.getUser();
+            if (!taskUser.getId().equals(user.getId())) {
+                throw new SecurityException("User does not have permission to delete this task.");
+            }
+            taskUser.removeTask(task);
             taskRepository.delete(taskOpt.get());
             System.out.println("Task deleted: " + taskOpt.get());
         }
@@ -108,8 +112,8 @@ public class TaskServicesImpl implements TaskServices {
      * @throws EntityNotFoundException if the task is not found.
      */
     @Override
-    public String getTaskName(String taskId){
-        Optional<Task> taskOptional = taskRepository.findById(taskId);
+    public String getTaskName(UUID taskId){
+        Optional<Task> taskOptional = taskRepository.findByUuid(taskId);
 
         if (taskOptional.isPresent()) {
             return taskOptional.get().getTitle();
