@@ -5,6 +5,8 @@ import edu.taskmanager.taskmanager.dto.TaskDto;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 /**
  * TaskServices is a service interface that provides methods for managing tasks.
  */
@@ -36,7 +38,7 @@ public interface TaskServices {
      * @param taskId - The ID of the task to be updated.
      * @param authHeader - The authorization token from the request header.
      */
-    void updateTask(TaskDto taskDto, String taskId, String authHeader);
+    void updateTask(TaskDto taskDto, UUID taskId, Authentication authentication);
 
     /**
      * Retrieves the name of the task identified by the task ID.

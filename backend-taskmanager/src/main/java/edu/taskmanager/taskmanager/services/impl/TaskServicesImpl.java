@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -101,44 +102,6 @@ public class TaskServicesImpl implements TaskServices {
     }
 
     /**
-     * Updates an existing task based on the provided TaskDto, taskId, and authorization token.
-     * @param taskDto - TaskDto object that contains the updated task details.
-     * @param taskId - The ID of the task to be updated.
-     * @param authHeader - The authorization token from the request header.
-     * @throws EntityNotFoundException if the user or task is not found.
-     */
-    @Override
-    public void updateTask(TaskDto taskDto, String taskId, String authHeader) {
-        Task newTask = new Task();
-        newTask.setTitle(taskDto.title());
-        newTask.setDescription(taskDto.description());
-        newTask.setStatus(taskDto.status());
-        newTask.setCategory(taskDto.category());
-        newTask.setCreatedDate(taskDto.createdDate());
-
-        String email = tokenService.getUserEmailFromToken(authHeader);
-        Optional<User> userOptional = userRepository.findByEmail(email);
-
-        if (userOptional.isPresent()){
-            User user = userOptional.get();
-            newTask.setUser(user);
-        }
-        else {
-            throw new EntityNotFoundException("Found no user with email " + email);
-        }
-
-        Optional<Task> taskOptional = taskRepository.findById(taskId);
-
-        if (taskOptional.isPresent()) {
-            newTask.setId(taskId);
-            taskRepository.save(newTask);
-        }
-        else {
-            throw new EntityNotFoundException("Task not found with id " + taskId);
-        }
-    }
-
-    /**
      * Retrieves the name of the task identified by the task ID.
      * @param taskId - The ID of the task.
      * @return the name of the task.
@@ -153,6 +116,34 @@ public class TaskServicesImpl implements TaskServices {
         }
         else {
             throw new EntityNotFoundException("Task not found with id " + taskId);
+        }
+    }
+
+    /**
+     * Updates an existing task based on the provided TaskDto, taskId, and authorization token.
+     * @param taskDto - TaskDto object that contains the updated task details.
+     * @param taskId - The ID of the task to be updated.
+     * @param authHeader - The authorization token from the request header.
+     * @throws EntityNotFoundException if the user or task is not found.
+     */
+    @Override
+    public void updateTask(TaskDto taskDto, UUID taskId, Authentication authentication) {
+        Task newTask = new Task();
+        newTask.setTitle(taskDto.title());
+        newTask.setDescription(taskDto.description());
+        newTask.setStatus(taskDto.status());
+        newTask.setCategory(taskDto.category());
+        newTask.setCreatedDate(taskDto.createdDate());
+        User user = (User) authentication.getPrincipal();
+        newTask.setUser(user);
+
+        Optional<Task> taskOptional = taskRepository.findByUuid(taskId);
+
+        if (taskOptional.isPresent()) {
+            newTask.setId(taskOptional.get().getId());
+            taskRepository.save(newTask);
+        } else {
+            throw new EntityNotFoundException("Task not found id " + taskId + ".");
         }
     }
 

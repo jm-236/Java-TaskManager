@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * TaskRepository is a repository interface for managing Task entities.
@@ -26,7 +27,7 @@ public interface TaskRepository extends JpaRepository<Task, String> {
      * @param id - The unique identifier of the task.
      * @return an Optional containing the task if found, or empty if not found.
      */
-    Optional<Task> findById(String id);
+    Optional<Task> findByUuid(UUID uuid);
 
     /**
      * Deletes a task entity.

@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * UserController is a REST controller that handles HTTP requests related to users.
@@ -99,13 +100,10 @@ public class UserController {
      * @return a ResponseEntity with a success message and a HTTP status code of 200 (OK).
      */
     @PutMapping("/tasks/{taskId}")
-    public ResponseEntity<String> updateTask(@RequestBody TaskDto body, @PathVariable String taskId,
-                                             @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
-        if (authorizationHeader == null) {
-            return ResponseEntity.ok("Token não encontrado");
-        }
+    public ResponseEntity<String> updateTask(@RequestBody TaskDto body, @PathVariable UUID taskId,
+                                             Authentication authentication) {
 
-        taskServices.updateTask(body, taskId, authorizationHeader);
+        taskServices.updateTask(body, taskId, authentication);
         return ResponseEntity.ok("Tarefa atualizada com sucesso!");
     }
 
