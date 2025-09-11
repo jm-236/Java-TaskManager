@@ -128,23 +128,22 @@ public class TaskServicesImpl implements TaskServices {
      */
     @Override
     public void updateTask(TaskDto taskDto, UUID taskId, Authentication authentication) {
-        Task newTask = new Task();
-        newTask.setTitle(taskDto.title());
-        newTask.setDescription(taskDto.description());
-        newTask.setStatus(taskDto.status());
-        newTask.setCategory(taskDto.category());
-        newTask.setCreatedDate(taskDto.createdDate());
+
         User user = (User) authentication.getPrincipal();
-        newTask.setUser(user);
 
-        Optional<Task> taskOptional = taskRepository.findByUuid(taskId);
+        Task taskToUpdate = taskRepository.findByUuid(taskId)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found with uuid " + taskId));
 
-        if (taskOptional.isPresent()) {
-            newTask.setId(taskOptional.get().getId());
-            taskRepository.save(newTask);
-        } else {
-            throw new EntityNotFoundException("Task not found id " + taskId + ".");
+        if (!taskToUpdate.getUser().getId().equals(user.getId())) {
+            throw new SecurityException("User does not have permission to update this task.");
         }
+
+        taskToUpdate.setTitle(taskDto.title());
+        taskToUpdate.setDescription(taskDto.description());
+        taskToUpdate.setStatus(taskDto.status());
+        taskToUpdate.setCategory(taskDto.category());
+
+        taskRepository.save(taskToUpdate);
     }
 
     private String recoverTokenFromCookie(HttpServletRequest request) {
