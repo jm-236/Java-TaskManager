@@ -1,8 +1,36 @@
+/* Reset total para ignorar o padrão do Vite */
+:root, body, #root {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  min-height: 100vh;
+  display: block !important; /* O Vite usa flex/grid aqui, o que encolhe tudo */
+  background-color: black;
+}
+
 .low-opacity {
-    opacity: 0.5;
-    transition: opacity 0.3s ease;
-  }
-  
-  .low-opacity:hover {
-    opacity: 1;
-  }
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.low-opacity:hover {
+  opacity: 1;
+}
+
+.hover-card {
+  transition: transform 0.2s ease-in-out;
+}
+
+.hover-card:hover {
+  transform: translateY(-5px);
+  border-color: #0d6efd !important;
+}
+
+/* Remove o foco azul feio do Bootstrap no input escuro */
+.focus-none:focus {
+  background: transparent !important;
+  color: white !important;
+  box-shadow: none !important;
+  border: none !important;
+}
