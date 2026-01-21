@@ -1,13 +1,28 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { ChevronLeft, Plus } from 'lucide-react';
+import api from '../../services/api';
+import Cookies from 'js-cookie';
+import { useAuth } from '../../context/AuthContext';
 
 const NovaTarefa = () => {
+  const { userEmail, isAuthenticated } = useAuth();
+
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+
+  const fecharPopup = () => {
+    setIsPopupVisible(false);
+    // Redireciona para a página inicial após fechar o pop-up de sucesso
+    if (popupMessage.includes('sucesso')) {
+        window.location.href = '/inicio';
+    }
+  }
+
   const [taskData, setTaskData] = useState({
     title: '',
     description: '',
     category: '',
-    date: '',
     status: ''
   });
 
@@ -26,6 +41,10 @@ const NovaTarefa = () => {
     'Pendente'
   ];
 
+  const retornar_tela_inicial = () => {
+    window.location.href = "/inicio"
+  }
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setTaskData(prev => ({
@@ -34,13 +53,30 @@ const NovaTarefa = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    const hoje = new Date();
+
     e.preventDefault();
-    // Lógica para salvar a tarefa
+    taskData['email'] = userEmail;
+    taskData['createdDate'] = hoje; 
     console.log(taskData);
+    const response = await api.post('/user/tasks', taskData)
+    
+    if (response.status == 200){
+          setPopupMessage(`Tarefa "${taskData.title}" salva com sucesso!`);
+          setIsPopupVisible(true);
+    } else {
+          setPopupMessage(`Erro ao salvar a tarefa "${taskData.title}".`);
+          setIsPopupVisible(true);
+          taskData["title"] = ""
+          taskData["description"] = ""
+          taskData["category"] = ""
+          taskData["status"] = ""
+    }
   };
 
   return (
+    <>
     <Container 
       fluid 
       className="d-flex flex-column w-auto p-5 bg-dark p-3 rounded align-items-center"
@@ -48,8 +84,8 @@ const NovaTarefa = () => {
     >
       <Row className="mb-4 align-items-center">
         <Col xs="auto">
-          <Button variant="outline-primary" className="border-0">
-            <ChevronLeft size={24} />
+          <Button variant="outline-primary" className="border-0" onClick={retornar_tela_inicial}>
+            <ChevronLeft size={24}/>
           </Button>
         </Col>
         <Col>
@@ -111,7 +147,7 @@ const NovaTarefa = () => {
           </Col>
         </Row>
 
-        <Row className="mb-3">
+        {/* <Row className="mb-3">
           <Col>
             <Form.Group>
               <Form.Label>Data</Form.Label>
@@ -124,7 +160,7 @@ const NovaTarefa = () => {
               />
             </Form.Group>
           </Col>
-        </Row>
+        </Row> */}
 
         <Row className="mb-3">
           <Col>
@@ -161,6 +197,17 @@ const NovaTarefa = () => {
         </Row>
       </Form>
     </Container>
+    {/* Pop-up condicional */}
+    {isPopupVisible && (
+        <div className="popup-overlay">
+            <div className="popup-content">
+                <h2>Aviso!</h2>
+                <p>{popupMessage}</p>
+                <button className='btn btn-sm btn-primary color-white' onClick={fecharPopup}>Fechar</button>
+            </div>
+        </div>
+    )}
+    </>
   );
 };
 

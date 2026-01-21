@@ -100,7 +100,7 @@ const TelaInicial = () => {
       {/* BOTÃO ADICIONAR */}
       <Row className="mb-4 justify-content-center">
         <div>
-          <Button variant="success" className="align-items-center rounded-pill px-4 py-2 fw-bold">
+          <Button variant="success" className="align-items-center rounded-pill px-4 py-2 fw-bold" onClick={() => window.location.href = '/criar_tarefa'}>
             <Plus size={20} className="me-2 justify-content-center" />
             Adicionar tarefa
           </Button>

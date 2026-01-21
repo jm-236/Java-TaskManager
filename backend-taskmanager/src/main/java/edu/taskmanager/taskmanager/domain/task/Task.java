@@ -63,7 +63,7 @@ public class Task {
     /**
      * The date the task was created.
      */
-    private Long createdDate; // createdDate: data de criação da tarefa
+    private Date createdDate; // createdDate: data de criação da tarefa
 
     /**
      * The category of the task.
