@@ -43,7 +43,7 @@ function TelaLogin() {
                     } else if (error.request) {
                         // A requisição foi feita, mas não houve resposta
                         console.log(error.request);
-                        setErro("Erro durante realização do Cadastro.")
+                        setErro("Erro durante realização do Login.")
                     } else {
                         // Algum erro ocorreu durante a configuração da requisição
                         console.log('Error', error.message);

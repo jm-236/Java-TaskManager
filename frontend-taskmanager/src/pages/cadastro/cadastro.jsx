@@ -45,9 +45,10 @@ function Cadastro() {
                 resposta => {
                     const nome = resposta.data.name
                     console.log('Usuário novo cadastrado:', nome)
+                    
                     // evoluir pra exibir um pop-up na tela depois
-                    setPopupMessage(`Usuário ${nome} cadastrado com sucesso!`);
-                    setIsPopupVisible(true);
+                setPopupMessage(`Usuário ${nome} cadastrado com sucesso!`);
+                setIsPopupVisible(true);
 
                     // window.location.href = '/inicio'    
                 }
