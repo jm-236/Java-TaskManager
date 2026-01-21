@@ -72,24 +72,6 @@ public class UserController {
     }
 
     /**
-     * This method is a POST endpoint for creating a new task.
-     * It is annotated with @PostMapping, meaning it will respond to HTTP POST requests.
-     * When a POST request is made to "/user/tasks", this method will be invoked.
-     * It creates a new task based on the provided TaskDto and authorization token.
-     * @param body - TaskDto object that contains the task details.
-     * @return a ResponseEntity with a success message and a HTTP status code of 200 (OK).
-     */
-    @PostMapping("/tasks")
-    public ResponseEntity<String> createTask(@RequestBody TaskDto body, Authentication authentication){
-        if (authentication == null) {
-            return ResponseEntity.badRequest().body("Token não encontrado");
-        }
-
-        taskServices.saveTask(body, authentication);
-        return ResponseEntity.ok("Task created with success!");
-    }
-
-    /**
      * This method is a PUT endpoint for updating an existing task.
      * It is annotated with @PutMapping, meaning it will respond to HTTP PUT requests.
      * When a PUT request is made to "/user/tasks/{taskId}", this method will be invoked.
@@ -105,6 +87,24 @@ public class UserController {
 
         taskServices.updateTask(body, taskId, authentication);
         return ResponseEntity.ok("Tarefa atualizada com sucesso!");
+    }
+
+    /**
+     * This method is a POST endpoint for creating a new task.
+     * It is annotated with @PostMapping, meaning it will respond to HTTP POST requests.
+     * When a POST request is made to "/user/tasks", this method will be invoked.
+     * It creates a new task based on the provided TaskDto and authorization token.
+     * @param body - TaskDto object that contains the task details.
+     * @return a ResponseEntity with a success message and a HTTP status code of 200 (OK).
+     */
+    @PostMapping("/tasks")
+    public ResponseEntity<String> createTask(@RequestBody TaskDto body, Authentication authentication){
+        if (authentication == null) {
+            return ResponseEntity.badRequest().body("Token não encontrado");
+        }
+
+        taskServices.saveTask(body, authentication);
+        return ResponseEntity.ok("Task created with success!");
     }
 
     /**

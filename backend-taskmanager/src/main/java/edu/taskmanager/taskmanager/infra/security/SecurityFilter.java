@@ -47,7 +47,8 @@ public class SecurityFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         // Lista de paths que devem ser ignorados pelo filtro de segurança
-        List<String> publicPaths = Arrays.asList("/auth/login", "/auth/register", "/h2-console");
+        // se quebrar o login, colocar depois: "/auth/login", "/auth/register", "/h2-console"
+        List<String> publicPaths = Arrays.asList();
 
         String path = request.getRequestURI();
 
