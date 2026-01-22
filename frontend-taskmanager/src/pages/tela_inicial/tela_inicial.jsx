@@ -6,6 +6,7 @@ import './index.css';
 import SearchCriteriaDropdown from './SearchCriteria.jsx';
 import api from '../../services/api';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
  
 const TelaInicial = () => {
   const [tasks, setTasks] = useState([]);
@@ -27,12 +28,21 @@ const TelaInicial = () => {
 
   }
 
+  const navigate = useNavigate();
+
+  const detalhes_tarefa = (task) => {
+
+    navigate('/tarefa', {state: task})
+  }
+
   useEffect(() => {
     const fetchTasks = async () => {
       try {
         setLoading(true);
         const response = await api.get('/user/tasks', { withCredentials: true });
+        console.log(response.data)
         setTasks(response.data);
+        
       } catch (err) {
         setError(err.message);
       } finally {
@@ -111,11 +121,11 @@ const TelaInicial = () => {
       <Row xs={1} sm={2} lg={3} xl={4} className="g-3 justify-content-center">
         {tasks.length > 0 ? (
           tasks.map((task) => (
-            <Col key={task.id}>
+            <Col key={task.uuid}>
               <Card className="h-100 border-secondary bg-dark text-white shadow-sm hover-card">
                 <Card.Body className="d-flex flex-column">
                   <div className="d-flex justify-content-between align-items-start mb-2">
-                    <small className="text-muted">{task.date}</small>
+                    <small className="text-muted">{task.createdDate}</small>
                     <span className={`badge ${task.status === 'Concluído' ? 'bg-success' : 'bg-primary'}`}>
                       {task.status}
                     </span>
@@ -130,7 +140,7 @@ const TelaInicial = () => {
                   <div className="mt-auto pt-3 border-top border-secondary">
                     <div className="d-flex justify-content-between align-items-center">
                       <small className="text-info">#{task.category}</small>
-                      <Button variant="outline-primary" size="sm">
+                      <Button variant="outline-primary" size="sm" onClick={() => detalhes_tarefa(task)}>
                         Ver Detalhes
                       </Button>
                     </div>
