@@ -14,6 +14,9 @@ const VisualizarTarefa = () => {
 
   const fecharPopup = () => {
     setIsPopupVisible(false);
+    if (popupMessage.includes("deleted with sucess")){
+      window.location.href = "/inicio"
+    }
   }
 
   const [taskData, setTaskData] = useState({
@@ -64,7 +67,7 @@ const VisualizarTarefa = () => {
       setIsPopupVisible(true);
     }
     else {
-      setPopupMessage(`Erro ao salvar a tarefa "${taskData.title}".`);
+      setPopupMessage(`Erro ao salvar mudanças na tarefa "${taskData.title}".`);
       setIsPopupVisible(true);
       taskData["title"] = task.title
       taskData["description"] = task.description 
@@ -72,6 +75,22 @@ const VisualizarTarefa = () => {
       taskData["status"] = task.status
     }
 
+  }
+
+  const excluir_tarefa = async (e) => {
+
+    e.preventDefault();
+
+    const response = await api.delete(`/user/tasks/${task.uuid}`)
+
+    if (response.status == 200){
+      setPopupMessage(response.data);
+      setIsPopupVisible(true);
+    }
+    else {
+      setPopupMessage(`Erro ao excluir a tarefa "${taskData.title}".`);
+      setIsPopupVisible(true);
+    }
   }
 
   return (
@@ -187,6 +206,7 @@ const VisualizarTarefa = () => {
                     variant='danger'
                     type='submit'
                     className='mt-4'
+                    onClick={excluir_tarefa}
                 >
                 <Trash2 size={20} />
                 </Button>
