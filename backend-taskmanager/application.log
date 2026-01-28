@@ -2033,3 +2033,140 @@ java.lang.RuntimeException: User Not Found
 2026-01-28T09:22:39.460-03:00  WARN 36976 --- [taskmanager] [SpringApplicationShutdownHook] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
 2026-01-28T09:22:39.461-03:00  INFO 36976 --- [taskmanager] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2026-01-28T09:22:39.462-03:00  INFO 36976 --- [taskmanager] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-01-28T09:34:28.726-03:00  INFO 38767 --- [taskmanager] [restartedMain] e.t.taskmanager.TaskmanagerApplication   : Starting TaskmanagerApplication using Java 21.0.9 with PID 38767 (/home/joao/Documentos/Github/Java-TaskManager/backend-taskmanager/target/classes started by joao in /home/joao/Documentos/Github/Java-TaskManager/backend-taskmanager)
+2026-01-28T09:34:28.728-03:00  INFO 38767 --- [taskmanager] [restartedMain] e.t.taskmanager.TaskmanagerApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-01-28T09:34:28.773-03:00  INFO 38767 --- [taskmanager] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-01-28T09:34:28.777-03:00  INFO 38767 --- [taskmanager] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-01-28T09:34:29.398-03:00  INFO 38767 --- [taskmanager] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-28T09:34:29.456-03:00  INFO 38767 --- [taskmanager] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 50 ms. Found 3 JPA repository interfaces.
+2026-01-28T09:34:29.991-03:00  INFO 38767 --- [taskmanager] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-01-28T09:34:30.007-03:00  INFO 38767 --- [taskmanager] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-01-28T09:34:30.007-03:00  INFO 38767 --- [taskmanager] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.28]
+2026-01-28T09:34:30.040-03:00  INFO 38767 --- [taskmanager] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-01-28T09:34:30.040-03:00  INFO 38767 --- [taskmanager] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1263 ms
+2026-01-28T09:34:30.067-03:00  INFO 38767 --- [taskmanager] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-01-28T09:34:30.245-03:00  INFO 38767 --- [taskmanager] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-01-28T09:34:30.248-03:00  INFO 38767 --- [taskmanager] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-01-28T09:34:30.266-03:00  INFO 38767 --- [taskmanager] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-01-28T09:34:30.367-03:00  INFO 38767 --- [taskmanager] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-28T09:34:30.423-03:00  INFO 38767 --- [taskmanager] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-01-28T09:34:30.454-03:00  INFO 38767 --- [taskmanager] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-01-28T09:34:30.698-03:00  INFO 38767 --- [taskmanager] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-28T09:34:31.530-03:00  INFO 38767 --- [taskmanager] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-28T09:34:31.570-03:00  INFO 38767 --- [taskmanager] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-28T09:34:31.926-03:00  WARN 38767 --- [taskmanager] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-28T09:34:31.943-03:00  INFO 38767 --- [taskmanager] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-01-28T09:34:32.266-03:00  WARN 38767 --- [taskmanager] [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-01-28T09:34:32.370-03:00  INFO 38767 --- [taskmanager] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-01-28T09:34:32.396-03:00  INFO 38767 --- [taskmanager] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-01-28T09:34:32.404-03:00  INFO 38767 --- [taskmanager] [restartedMain] e.t.taskmanager.TaskmanagerApplication   : Started TaskmanagerApplication in 4.034 seconds (process running for 4.45)
+2026-01-28T09:34:32.642-03:00  INFO 38767 --- [taskmanager] [restartedMain] e.t.taskmanager.config.DataSeeder        : Usuário 'João' salvo no banco de dados com sucesso!
+
+2026-01-28T09:34:54.302-03:00  INFO 38767 --- [taskmanager] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-28T09:34:54.313-03:00  WARN 38767 --- [taskmanager] [SpringApplicationShutdownHook] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
+2026-01-28T09:34:54.313-03:00  INFO 38767 --- [taskmanager] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-01-28T09:34:54.316-03:00  INFO 38767 --- [taskmanager] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-01-28T09:35:00.846-03:00  INFO 39072 --- [taskmanager] [restartedMain] e.t.taskmanager.TaskmanagerApplication   : Starting TaskmanagerApplication using Java 21.0.9 with PID 39072 (/home/joao/Documentos/Github/Java-TaskManager/backend-taskmanager/target/classes started by joao in /home/joao/Documentos/Github/Java-TaskManager/backend-taskmanager)
+2026-01-28T09:35:00.848-03:00  INFO 39072 --- [taskmanager] [restartedMain] e.t.taskmanager.TaskmanagerApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-01-28T09:35:00.888-03:00  INFO 39072 --- [taskmanager] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-01-28T09:35:00.889-03:00  INFO 39072 --- [taskmanager] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-01-28T09:35:01.429-03:00  INFO 39072 --- [taskmanager] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-28T09:35:01.481-03:00  INFO 39072 --- [taskmanager] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 47 ms. Found 3 JPA repository interfaces.
+2026-01-28T09:35:01.924-03:00  INFO 39072 --- [taskmanager] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-01-28T09:35:01.936-03:00  INFO 39072 --- [taskmanager] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-01-28T09:35:01.936-03:00  INFO 39072 --- [taskmanager] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.28]
+2026-01-28T09:35:01.969-03:00  INFO 39072 --- [taskmanager] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-01-28T09:35:01.970-03:00  INFO 39072 --- [taskmanager] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1081 ms
+2026-01-28T09:35:02.000-03:00  INFO 39072 --- [taskmanager] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-01-28T09:35:02.142-03:00  INFO 39072 --- [taskmanager] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-01-28T09:35:02.146-03:00  INFO 39072 --- [taskmanager] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-01-28T09:35:02.160-03:00  INFO 39072 --- [taskmanager] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-01-28T09:35:02.257-03:00  INFO 39072 --- [taskmanager] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-28T09:35:02.292-03:00  INFO 39072 --- [taskmanager] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-01-28T09:35:02.314-03:00  INFO 39072 --- [taskmanager] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-01-28T09:35:02.515-03:00  INFO 39072 --- [taskmanager] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-28T09:35:03.194-03:00  INFO 39072 --- [taskmanager] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-28T09:35:03.233-03:00  INFO 39072 --- [taskmanager] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-28T09:35:03.552-03:00  WARN 39072 --- [taskmanager] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-28T09:35:03.568-03:00  INFO 39072 --- [taskmanager] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-01-28T09:35:03.857-03:00  WARN 39072 --- [taskmanager] [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-01-28T09:35:03.951-03:00  INFO 39072 --- [taskmanager] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-01-28T09:35:03.972-03:00  INFO 39072 --- [taskmanager] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-01-28T09:35:03.980-03:00  INFO 39072 --- [taskmanager] [restartedMain] e.t.taskmanager.TaskmanagerApplication   : Started TaskmanagerApplication in 3.418 seconds (process running for 3.754)
+2026-01-28T09:35:04.228-03:00  INFO 39072 --- [taskmanager] [restartedMain] e.t.taskmanager.config.DataSeeder        : Usuário 'João' salvo no banco de dados com sucesso!
+
+2026-01-28T09:35:21.165-03:00  INFO 39072 --- [taskmanager] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-28T09:35:21.165-03:00  INFO 39072 --- [taskmanager] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-01-28T09:35:21.167-03:00  INFO 39072 --- [taskmanager] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-01-28T09:40:06.788-03:00  INFO 39072 --- [taskmanager] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-28T09:40:06.797-03:00  WARN 39072 --- [taskmanager] [SpringApplicationShutdownHook] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
+2026-01-28T09:40:06.798-03:00  INFO 39072 --- [taskmanager] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-01-28T09:40:06.800-03:00  INFO 39072 --- [taskmanager] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-01-28T09:40:13.261-03:00  INFO 39815 --- [taskmanager] [restartedMain] e.t.taskmanager.TaskmanagerApplication   : Starting TaskmanagerApplication using Java 21.0.9 with PID 39815 (/home/joao/Documentos/Github/Java-TaskManager/backend-taskmanager/target/classes started by joao in /home/joao/Documentos/Github/Java-TaskManager/backend-taskmanager)
+2026-01-28T09:40:13.263-03:00  INFO 39815 --- [taskmanager] [restartedMain] e.t.taskmanager.TaskmanagerApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-01-28T09:40:13.297-03:00  INFO 39815 --- [taskmanager] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-01-28T09:40:13.298-03:00  INFO 39815 --- [taskmanager] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-01-28T09:40:13.880-03:00  INFO 39815 --- [taskmanager] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-28T09:40:13.932-03:00  INFO 39815 --- [taskmanager] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 45 ms. Found 3 JPA repository interfaces.
+2026-01-28T09:40:14.382-03:00  INFO 39815 --- [taskmanager] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-01-28T09:40:14.394-03:00  INFO 39815 --- [taskmanager] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-01-28T09:40:14.394-03:00  INFO 39815 --- [taskmanager] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.28]
+2026-01-28T09:40:14.427-03:00  INFO 39815 --- [taskmanager] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-01-28T09:40:14.427-03:00  INFO 39815 --- [taskmanager] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1129 ms
+2026-01-28T09:40:14.460-03:00  INFO 39815 --- [taskmanager] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-01-28T09:40:14.588-03:00  INFO 39815 --- [taskmanager] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-01-28T09:40:14.589-03:00  INFO 39815 --- [taskmanager] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-01-28T09:40:14.600-03:00  INFO 39815 --- [taskmanager] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-01-28T09:40:14.693-03:00  INFO 39815 --- [taskmanager] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-28T09:40:14.727-03:00  INFO 39815 --- [taskmanager] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-01-28T09:40:14.750-03:00  INFO 39815 --- [taskmanager] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-01-28T09:40:14.975-03:00  INFO 39815 --- [taskmanager] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-28T09:40:15.696-03:00  INFO 39815 --- [taskmanager] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-28T09:40:15.750-03:00  INFO 39815 --- [taskmanager] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-28T09:40:16.254-03:00  WARN 39815 --- [taskmanager] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-28T09:40:16.282-03:00  INFO 39815 --- [taskmanager] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-01-28T09:40:16.573-03:00  WARN 39815 --- [taskmanager] [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-01-28T09:40:16.665-03:00  INFO 39815 --- [taskmanager] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-01-28T09:40:16.693-03:00  INFO 39815 --- [taskmanager] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-01-28T09:40:16.701-03:00  INFO 39815 --- [taskmanager] [restartedMain] e.t.taskmanager.TaskmanagerApplication   : Started TaskmanagerApplication in 3.736 seconds (process running for 4.086)
+2026-01-28T09:40:16.942-03:00  INFO 39815 --- [taskmanager] [restartedMain] e.t.taskmanager.config.DataSeeder        : Usuário 'João' salvo no banco de dados com sucesso!
+
+2026-01-28T09:40:21.678-03:00  INFO 39815 --- [taskmanager] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-28T09:40:21.678-03:00  INFO 39815 --- [taskmanager] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-01-28T09:40:21.679-03:00  INFO 39815 --- [taskmanager] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-01-28T09:45:37.257-03:00  INFO 39815 --- [taskmanager] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-28T09:45:37.263-03:00  WARN 39815 --- [taskmanager] [SpringApplicationShutdownHook] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]
+2026-01-28T09:45:37.264-03:00  INFO 39815 --- [taskmanager] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-01-28T09:45:37.266-03:00  INFO 39815 --- [taskmanager] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-01-28T09:45:56.221-03:00  INFO 40687 --- [taskmanager] [restartedMain] e.t.taskmanager.TaskmanagerApplication   : Starting TaskmanagerApplication using Java 21.0.9 with PID 40687 (/home/joao/Documentos/Github/Java-TaskManager/backend-taskmanager/target/classes started by joao in /home/joao/Documentos/Github/Java-TaskManager/backend-taskmanager)
+2026-01-28T09:45:56.222-03:00  INFO 40687 --- [taskmanager] [restartedMain] e.t.taskmanager.TaskmanagerApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-01-28T09:45:56.260-03:00  INFO 40687 --- [taskmanager] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-01-28T09:45:56.260-03:00  INFO 40687 --- [taskmanager] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-01-28T09:45:56.770-03:00  INFO 40687 --- [taskmanager] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-28T09:45:56.822-03:00  INFO 40687 --- [taskmanager] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 47 ms. Found 3 JPA repository interfaces.
+2026-01-28T09:45:57.273-03:00  INFO 40687 --- [taskmanager] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-01-28T09:45:57.285-03:00  INFO 40687 --- [taskmanager] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-01-28T09:45:57.285-03:00  INFO 40687 --- [taskmanager] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.28]
+2026-01-28T09:45:57.317-03:00  INFO 40687 --- [taskmanager] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-01-28T09:45:57.318-03:00  INFO 40687 --- [taskmanager] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1058 ms
+2026-01-28T09:45:57.349-03:00  INFO 40687 --- [taskmanager] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-01-28T09:45:57.476-03:00  INFO 40687 --- [taskmanager] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2026-01-28T09:45:57.477-03:00  INFO 40687 --- [taskmanager] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-01-28T09:45:57.488-03:00  INFO 40687 --- [taskmanager] [restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:testdb'
+2026-01-28T09:45:57.588-03:00  INFO 40687 --- [taskmanager] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-01-28T09:45:57.622-03:00  INFO 40687 --- [taskmanager] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-01-28T09:45:57.645-03:00  INFO 40687 --- [taskmanager] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-01-28T09:45:57.869-03:00  INFO 40687 --- [taskmanager] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-28T09:45:58.517-03:00  INFO 40687 --- [taskmanager] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-01-28T09:45:58.556-03:00  INFO 40687 --- [taskmanager] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-28T09:45:58.874-03:00  WARN 40687 --- [taskmanager] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-28T09:45:58.894-03:00  INFO 40687 --- [taskmanager] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-01-28T09:45:59.194-03:00  WARN 40687 --- [taskmanager] [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2026-01-28T09:45:59.287-03:00  INFO 40687 --- [taskmanager] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-01-28T09:45:59.314-03:00  INFO 40687 --- [taskmanager] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-01-28T09:45:59.322-03:00  INFO 40687 --- [taskmanager] [restartedMain] e.t.taskmanager.TaskmanagerApplication   : Started TaskmanagerApplication in 3.393 seconds (process running for 3.773)
+2026-01-28T09:45:59.568-03:00  INFO 40687 --- [taskmanager] [restartedMain] e.t.taskmanager.config.DataSeeder        : Usuário 'João' salvo no banco de dados com sucesso!
+
+2026-01-28T09:46:39.261-03:00  INFO 40687 --- [taskmanager] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-28T09:46:39.262-03:00  INFO 40687 --- [taskmanager] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-01-28T09:46:39.263-03:00  INFO 40687 --- [taskmanager] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms

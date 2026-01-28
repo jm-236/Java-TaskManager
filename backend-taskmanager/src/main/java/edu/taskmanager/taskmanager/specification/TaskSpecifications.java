@@ -43,7 +43,7 @@ public class TaskSpecifications {
     }
 
     // busca OR
-    public static Specification<Task> searchGlobal(User user, String searchTerm) {
+    public static Specification<Task> searchGlobal(User user, String searchTerm, String parameterSearch) {
         return (root, query, cb) -> {
             // O filtro de usuário continua sendo um AND (obrigatório por segurança)
             Predicate userPredicate = cb.equal(root.get("user"), user);
@@ -54,16 +54,23 @@ public class TaskSpecifications {
 
             String pattern = "%" + searchTerm.toLowerCase() + "%";
 
-            // condições para o OR
-            Predicate titleLike = cb.like(cb.lower(root.get("title")), pattern);
-            Predicate descLike = cb.like(cb.lower(root.get("description")), pattern);
-            Predicate catLike = cb.like(cb.lower(root.get("category")), pattern);
-            Predicate statusLike = cb.like(cb.lower(root.get("status")), pattern);
+                // condições para o OR
+                Predicate titleLike = cb.like(cb.lower(root.get("title")), pattern);
+                Predicate descLike = cb.like(cb.lower(root.get("description")), pattern);
+                Predicate catLike = cb.like(cb.lower(root.get("category")), pattern);
+                Predicate statusLike = cb.like(cb.lower(root.get("status")), pattern);
 
-            Predicate orPredicate = cb.or(titleLike, descLike, catLike, statusLike);
+                Predicate orPredicate = switch (parameterSearch) {
+                    case "all" -> cb.or(titleLike, descLike, catLike, statusLike);
+                    case "title" -> titleLike;
+                    case "description" -> descLike;
+                    case "category" -> catLike;
+                    case "status" -> statusLike;
+                    default -> cb.or(titleLike, descLike, catLike, statusLike);
+                };
 
-            // O resultado final é: (Dono da tarefa) AND (Nome contém X OR Descrição contém X)
-            return cb.and(userPredicate, orPredicate);
+                // O resultado final é: (Dono da tarefa) AND (Nome contém X OR Descrição contém X)
+                return cb.and(userPredicate, orPredicate);
         };
     }
 }

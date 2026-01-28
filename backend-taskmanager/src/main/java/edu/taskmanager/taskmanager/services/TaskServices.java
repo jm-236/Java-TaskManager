@@ -20,6 +20,7 @@ public interface TaskServices {
     Iterable<TaskDto> listAllTasks(
        Authentication authentication,
        String query,
+       String parameterSearch,
        Pageable pageable
     );
 

@@ -69,6 +69,7 @@ public class UserController {
     public ResponseEntity<?> getTasks(
             Authentication authentication,
             @RequestParam(name = "query", required = false, defaultValue = "") String query,
+            @RequestParam(name="parameterSearch", required = false, defaultValue = "all") String parameterSearch,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
             ) {
@@ -77,7 +78,7 @@ public class UserController {
         }
 
         Pageable pageable = PageRequest.of(page, size);
-        List<TaskDto> tasks = taskServices.listAllTasks(authentication, query, pageable);
+        List<TaskDto> tasks = taskServices.listAllTasks(authentication, query, parameterSearch, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(tasks);
     }
 

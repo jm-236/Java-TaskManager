@@ -45,11 +45,12 @@ public class TaskServicesImpl implements TaskServices {
     public List<TaskDto> listAllTasks(
             Authentication authentication,
             String query,
+            String parameterSearch,
             Pageable pageable
             ) {
 
         User user = (User) authentication.getPrincipal();
-        Specification<Task> spec = TaskSpecifications.searchGlobal(user, query);
+        Specification<Task> spec = TaskSpecifications.searchGlobal(user, query, parameterSearch);
 
         // O Spring Data JPA faz a query dinâmica e a paginação automaticamente
         Page<Task> tasksPage = taskRepository.findAll(spec, pageable);
