@@ -68,11 +68,7 @@ public class UserController {
     @GetMapping("/tasks")
     public ResponseEntity<?> getTasks(
             Authentication authentication,
-            @RequestParam(name = "title", required = false, defaultValue = "") String title,
-            @RequestParam(name = "date", required = false, defaultValue = "") String date,
-            @RequestParam(name = "description", required = false, defaultValue = "") String description,
-            @RequestParam(name = "status", required = false, defaultValue = "") String status,
-            @RequestParam(name = "category", required = false, defaultValue = "") String category,
+            @RequestParam(name = "query", required = false, defaultValue = "") String query,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
             ) {
@@ -81,7 +77,7 @@ public class UserController {
         }
 
         Pageable pageable = PageRequest.of(page, size);
-        List<TaskDto> tasks = taskServices.listAllTasks(authentication, title, date, description, status, category, pageable);
+        List<TaskDto> tasks = taskServices.listAllTasks(authentication, query, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(tasks);
     }
 

@@ -55,12 +55,12 @@ public class TaskSpecifications {
             String pattern = "%" + searchTerm.toLowerCase() + "%";
 
             // condições para o OR
-            Predicate nameLike = cb.like(cb.lower(root.get("name")), pattern);
+            Predicate titleLike = cb.like(cb.lower(root.get("title")), pattern);
             Predicate descLike = cb.like(cb.lower(root.get("description")), pattern);
             Predicate catLike = cb.like(cb.lower(root.get("category")), pattern);
             Predicate statusLike = cb.like(cb.lower(root.get("status")), pattern);
 
-            Predicate orPredicate = cb.or(nameLike, descLike, catLike, statusLike);
+            Predicate orPredicate = cb.or(titleLike, descLike, catLike, statusLike);
 
             // O resultado final é: (Dono da tarefa) AND (Nome contém X OR Descrição contém X)
             return cb.and(userPredicate, orPredicate);

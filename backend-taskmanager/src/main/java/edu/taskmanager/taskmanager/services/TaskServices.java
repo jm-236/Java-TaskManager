@@ -19,11 +19,7 @@ public interface TaskServices {
      */
     Iterable<TaskDto> listAllTasks(
        Authentication authentication,
-       String title,
-       String date,
-       String description,
-       String status,
-       String categoria,
+       String query,
        Pageable pageable
     );
 
