@@ -1,9 +1,9 @@
 package edu.taskmanager.taskmanager.services;
 
-import edu.taskmanager.taskmanager.domain.task.Task;
 import edu.taskmanager.taskmanager.dto.TaskDto;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
 
 import java.util.UUID;
 
@@ -17,7 +17,15 @@ public interface TaskServices {
      * @param userId - The ID of the user whose tasks are to be listed.
      * @return an Iterable containing all tasks associated with the user.
      */
-    Iterable<TaskDto> listAllTasks(Authentication authentication);
+    Iterable<TaskDto> listAllTasks(
+       Authentication authentication,
+       String title,
+       String date,
+       String description,
+       String status,
+       String categoria,
+       Pageable pageable
+    );
 
     /**
      * Saves a new task based on the provided TaskDto and authorization token.

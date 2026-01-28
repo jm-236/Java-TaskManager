@@ -7,22 +7,19 @@ import edu.taskmanager.taskmanager.infra.security.TokenService;
 import edu.taskmanager.taskmanager.repositories.TaskRepository;
 import edu.taskmanager.taskmanager.repositories.UserRepository;
 import edu.taskmanager.taskmanager.services.TaskServices;
+import edu.taskmanager.taskmanager.specification.TaskSpecifications;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * TaskServicesImpl is a service implementation class that provides methods for managing tasks.
@@ -45,17 +42,26 @@ public class TaskServicesImpl implements TaskServices {
      * @throws EntityNotFoundException if the user is not found.
      */
     @Override
-    public List<TaskDto> listAllTasks(Authentication authentication) {
+    public List<TaskDto> listAllTasks(
+            Authentication authentication,
+            String title,
+            String date,
+            String description,
+            String status,
+            String categoria,
+            Pageable pageable
+            ) {
 
         User user = (User) authentication.getPrincipal();
 
-        Optional<List<Task>> listOpt = taskRepository.findByUser(user);
-        if (listOpt.isPresent()){
-            return listOpt.get().stream().map(TaskDto::new)
-                    .collect(Collectors.toList());
-        }
-        return Collections.emptyList();
-//        throw new EntityNotFoundException("User not found with email " + userEmail);
+        // Criamos a especificação com os filtros recebidos
+        Specification<Task> spec = TaskSpecifications.filterTasks(user, title, status, categoria, description);
+
+        // O Spring Data JPA faz a query dinâmica e a paginação automaticamente
+        Page<Task> tasksPage = taskRepository.findAll(spec, pageable);
+
+        // Convertemos a página de Entidade para página de DTO
+        return tasksPage.map(TaskDto::new).stream().toList();
     }
 
     /**
@@ -127,7 +133,6 @@ public class TaskServicesImpl implements TaskServices {
      * Updates an existing task based on the provided TaskDto, taskId, and authorization token.
      * @param taskDto - TaskDto object that contains the updated task details.
      * @param taskId - The ID of the task to be updated.
-     * @param authHeader - The authorization token from the request header.
      * @throws EntityNotFoundException if the user or task is not found.
      */
     @Override

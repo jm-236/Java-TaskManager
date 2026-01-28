@@ -7,12 +7,16 @@ import edu.taskmanager.taskmanager.services.impl.PasswordResetServicesImpl;
 import edu.taskmanager.taskmanager.services.impl.TaskServicesImpl;
 import edu.taskmanager.taskmanager.services.impl.UserServicesImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,12 +66,22 @@ public class UserController {
      * @return a ResponseEntity with the list of tasks and a HTTP status code of 200 (OK).
      */
     @GetMapping("/tasks")
-    public ResponseEntity<?> getTasks(Authentication authentication) {
+    public ResponseEntity<?> getTasks(
+            Authentication authentication,
+            @RequestParam(name = "title", required = false, defaultValue = "") String title,
+            @RequestParam(name = "date", required = false, defaultValue = "") String date,
+            @RequestParam(name = "description", required = false, defaultValue = "") String description,
+            @RequestParam(name = "status", required = false, defaultValue = "") String status,
+            @RequestParam(name = "category", required = false, defaultValue = "") String category,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+            ) {
         if (authentication == null) {
             return ResponseEntity.badRequest().body("Token não encontrado");
         }
 
-        List<TaskDto> tasks = taskServices.listAllTasks(authentication);
+        Pageable pageable = PageRequest.of(page, size);
+        List<TaskDto> tasks = taskServices.listAllTasks(authentication, title, date, description, status, category, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(tasks);
     }
 
@@ -78,7 +92,6 @@ public class UserController {
      * It updates an existing task based on the provided TaskDto, taskId, and authorization token.
      * @param body - TaskDto object that contains the updated task details.
      * @param taskId - The ID of the task to be updated.
-     * @param authorizationHeader - The authorization token from the request header.
      * @return a ResponseEntity with a success message and a HTTP status code of 200 (OK).
      */
     @PutMapping("/tasks/{taskId}")

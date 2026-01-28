@@ -4,6 +4,7 @@ import edu.taskmanager.taskmanager.domain.task.Task;
 import edu.taskmanager.taskmanager.domain.user.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +14,7 @@ import java.util.UUID;
  * TaskRepository is a repository interface for managing Task entities.
  * It extends JpaRepository to provide CRUD operations and additional query methods.
  */
-public interface TaskRepository extends JpaRepository<Task, String> {
+public interface TaskRepository extends JpaRepository<Task, String>, JpaSpecificationExecutor<Task> {
 
     /**
      * Finds a list of tasks associated with a specific user.

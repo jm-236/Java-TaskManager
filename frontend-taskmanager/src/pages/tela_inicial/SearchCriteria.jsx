@@ -6,7 +6,7 @@ const SearchCriteriaDropdown = () => {
 
   const searchCriteria = [
     'Todos', 
-    'Data', 
+    // 'Data', 
     'Descrição', 
     'Nome da Tarefa', 
     'Categoria', 
