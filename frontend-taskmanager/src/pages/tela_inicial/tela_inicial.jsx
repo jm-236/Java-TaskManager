@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Row, Col, Card, Form, Button, Spinner } from 'react-bootstrap';
 import { LogOut, CircleUser, Plus } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -14,6 +14,13 @@ const TelaInicial = () => {
   const [error, setError] = useState(null);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchCriteria, setSearchCriteria] = useState('all');
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const pageSize = 4;
+  
   const fecharPopup = () => {
         setIsPopupVisible(false);
         window.location.href = "/login"
@@ -31,26 +38,69 @@ const TelaInicial = () => {
   const navigate = useNavigate();
 
   const detalhes_tarefa = (task) => {
-
     navigate('/tarefa', {state: task})
   }
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
+  // Função para buscar tarefas com os parâmetros
+  const fetchTasks = async (currentPage = 0, appendResults = false) => {
+    try {
+      if (!appendResults) {
         setLoading(true);
-        const response = await api.get('/user/tasks', { withCredentials: true });
-        console.log(response.data)
-        setTasks(response.data);
-        
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+      } else {
+        setLoadingMore(true);
       }
-    };
-    fetchTasks();
+      
+      const response = await api.get('/user/tasks', {
+        params: {
+          query: searchQuery,
+          parameterSearch: searchCriteria,
+          page: currentPage,
+          size: pageSize
+        },
+        withCredentials: true
+      });
+      
+      console.log(response.data);
+      
+      // Verificar se há mais tarefas (se retornou menos que o pageSize, não há mais)
+      const newTasks = response.data;
+      setHasMore(newTasks.length === pageSize);
+      
+      if (appendResults) {
+        setTasks(prevTasks => [...prevTasks, ...newTasks]);
+      } else {
+        setTasks(newTasks);
+      }
+      
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
+    }
+  };
+
+  // Debounce para pesquisa
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      setPage(0);
+      fetchTasks(0, false);
+    }, 500); // Aguarda 500ms após o usuário parar de digitar
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchQuery, searchCriteria]);
+
+  // Carregar tarefas iniciais
+  useEffect(() => {
+    fetchTasks(0, false);
   }, []);
+
+  // Função para carregar mais tarefas
+  const handleLoadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchTasks(nextPage, true);
+  };
 
   if (loading) {
     return (
@@ -91,11 +141,16 @@ const TelaInicial = () => {
       
       <Col xs={8} md={10}>
         <div className="d-flex align-items-center bg-dark rounded-pill px-3 py-2" style={{ border: '1px solid #333' }}>
-          <SearchCriteriaDropdown />
+          <SearchCriteriaDropdown 
+            selectedCriteria={searchCriteria}
+            onCriteriaChange={setSearchCriteria}
+          />
           <Form.Control 
             type="text" 
             placeholder="Pesquisar tarefas..." 
             className="bg-transparent border-0 text-white shadow-none focus-none w-100" 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
       </Col>
@@ -158,6 +213,29 @@ const TelaInicial = () => {
           </Col>
         )}
       </Row>
+
+      {/* BOTÃO CARREGAR MAIS */}
+      {tasks.length > 0 && hasMore && (
+        <Row className="mt-4 justify-content-center">
+          <Col xs="auto">
+            <Button 
+              variant="outline-light" 
+              className="rounded-pill px-4 py-2"
+              onClick={handleLoadMore}
+              disabled={loadingMore}
+            >
+              {loadingMore ? (
+                <>
+                  <Spinner animation="border" size="sm" className="me-2" />
+                  Carregando...
+                </>
+              ) : (
+                'Carregar mais'
+              )}
+            </Button>
+          </Col>
+        </Row>
+      )}
       </div>  
   </Container>
   {/* Pop-up condicional */}

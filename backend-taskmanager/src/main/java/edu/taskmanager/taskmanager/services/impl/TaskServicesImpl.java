@@ -52,6 +52,7 @@ public class TaskServicesImpl implements TaskServices {
         User user = (User) authentication.getPrincipal();
         Specification<Task> spec = TaskSpecifications.searchGlobal(user, query, parameterSearch);
 
+
         // O Spring Data JPA faz a query dinâmica e a paginação automaticamente
         Page<Task> tasksPage = taskRepository.findAll(spec, pageable);
 
