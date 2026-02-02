@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import edu.taskmanager.taskmanager.domain.user.User;
 import edu.taskmanager.taskmanager.repositories.UserRepository;
@@ -63,14 +64,17 @@ public class SecurityFilter extends OncePerRequestFilter {
         var login = tokenService.validateToken(token); // validates the recovered token (returns the email)
         if(login != null){
             // Fetch the user from the database
-            User user = userRepository.findByEmail(login).orElseThrow(() -> new RuntimeException("User Not Found"));
+            Optional<User> userOpt = userRepository.findByEmail(login);
+            if (userOpt.isPresent()) {
 
-            // Storing the user's permissions
-            var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+                User user = userOpt.get();
+                // Storing the user's permissions
+                var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
 
-            // Creating the user's authentication
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                // Creating the user's authentication
+                var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
         filterChain.doFilter(request, response);
     }

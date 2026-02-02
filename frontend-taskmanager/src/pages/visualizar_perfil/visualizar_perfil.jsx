@@ -2,11 +2,18 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { ChevronLeft, Check, Trash2 } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useLocation } from 'react-router-dom';
+import api from '../../services/api';
+
 
 const VisualizarPerfil = () => {
+
+  const location = useLocation();
+  const userInfo = location.state;
+
   const [userData, setUserData] = useState({
-    name: 'Nome do usuário',
-    email: 'email@exemplo.com'
+    name: userInfo.name,
+    email: userInfo.email
   });
 
   const [isEditingName, setIsEditingName] = useState(false);
@@ -35,10 +42,14 @@ const VisualizarPerfil = () => {
     setIsEditingEmail(false);
   };
 
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = async () => {
     // Lógica para excluir conta
     if (window.confirm('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.')) {
-      console.log('Conta excluída');
+      const response = await api.delete('/user');
+
+      if (window.confirm(response.data)){
+        window.location.href = '/login';
+      }
     }
   };
 

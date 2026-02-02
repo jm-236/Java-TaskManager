@@ -1,6 +1,8 @@
 package edu.taskmanager.taskmanager.controllers;
 
+import edu.taskmanager.taskmanager.domain.user.User;
 import edu.taskmanager.taskmanager.dto.TaskDto;
+import edu.taskmanager.taskmanager.dto.UserDto;
 import edu.taskmanager.taskmanager.dto.resetPasswordDto;
 import edu.taskmanager.taskmanager.infra.security.TokenService;
 import edu.taskmanager.taskmanager.services.impl.PasswordResetServicesImpl;
@@ -16,7 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,18 +45,21 @@ public class UserController {
      * When a GET request is made to "/user", this method will be invoked.
      * It returns a ResponseEntity with the body "SUCESSO!" and a HTTP status code of 200 (OK).
      * ResponseEntity is a real deal. It represents the entire HTTP response. Good thing about it is that you can control anything that goes into it.
+     *
      * @return a ResponseEntity with the body "SUCESSO!" and a HTTP status code of 200 (OK).
      */
     @GetMapping
-    public ResponseEntity<String> getUser() {
-        return ResponseEntity.ok("SUCESSO!");
+    public ResponseEntity<UserDto> getUser(Authentication authentication) {
+
+        User user = (User) authentication.getPrincipal();
+        return ResponseEntity.status(HttpStatus.OK).body(new UserDto(user.getName(), user.getEmail()));
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
-        String email = tokenService.getUserEmailFromToken(authorizationHeader);
-        userServices.deleteUser(email);
-        return ResponseEntity.ok("User deleted");
+    public ResponseEntity<String> deleteUser(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        userServices.deleteUser(user.getEmail());
+        return ResponseEntity.ok("Usuário com email " + user.getEmail() + "removido do taskmanager.");
     }
 
     /**

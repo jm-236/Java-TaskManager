@@ -1,6 +1,7 @@
 package edu.taskmanager.taskmanager.services;
 
 import edu.taskmanager.taskmanager.domain.user.User;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import jakarta.servlet.http.Cookie;
 
@@ -18,4 +19,7 @@ public interface UserServices {
      */
     void deleteUser(String email);
 
+    String getName(User user);
+
+    String getEmail(User user);
 }

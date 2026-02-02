@@ -41,6 +41,16 @@ const TelaInicial = () => {
     navigate('/tarefa', {state: task})
   }
 
+  const editar_perfil = async () => {
+
+    const response = await api.get('/user', {withCredentials: true});
+    if (response.status == 200){
+        const userData = response.data;
+        navigate('/perfil', {state: userData})  
+    }
+    
+  }
+
   // Função para buscar tarefas com os parâmetros
   const fetchTasks = async (currentPage = 0, appendResults = false) => {
     try {
@@ -59,8 +69,6 @@ const TelaInicial = () => {
         },
         withCredentials: true
       });
-      
-      console.log(response.data);
       
       // Verificar se há mais tarefas (se retornou menos que o pageSize, não há mais)
       const newTasks = response.data;
@@ -156,7 +164,7 @@ const TelaInicial = () => {
       </Col>
 
       <Col xs={2} md={1} className="text-end">
-        <Button variant="dark bg-transparent border-0 p-0 low-opacity">
+        <Button variant="dark bg-transparent border-0 p-0 low-opacity" onClick={editar_perfil}>
           <CircleUser size={48} />
         </Button>
       </Col>

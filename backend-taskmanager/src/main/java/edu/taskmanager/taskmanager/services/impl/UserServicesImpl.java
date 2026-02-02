@@ -9,6 +9,7 @@ import edu.taskmanager.taskmanager.services.UserServices;
 import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,4 +50,15 @@ public class UserServicesImpl implements UserServices {
             userRepository.delete(user);
         }
     }
+
+    @Override
+    public String getName(User user) {
+        return user.getName();
+    }
+
+    @Override
+    public String getEmail(User user) {
+        return user.getEmail();
+    }
+
 }
