@@ -66,7 +66,7 @@ public class UserController {
     public ResponseEntity<String> updateUser(Authentication authentication, @RequestBody UserDto userDto){
         userServices.updateUser(userDto.email(), userDto.name(), authentication);
 
-        return ResponseEntity.ok("Dados do usuário atualizados com sucesso!");  
+        return ResponseEntity.ok("Dados do usuário atualizados com sucesso!");
     }
 
     /**
