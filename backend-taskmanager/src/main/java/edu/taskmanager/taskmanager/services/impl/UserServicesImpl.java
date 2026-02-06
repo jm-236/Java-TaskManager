@@ -51,6 +51,15 @@ public class UserServicesImpl implements UserServices {
         }
     }
 
+    public void updateUser(String email, String name, Authentication authentication){
+        User user = (User) authentication.getPrincipal();
+
+        user.setName(name);
+        user.setEmail(email);
+
+        userRepository.save(user);
+    }
+
     @Override
     public String getName(User user) {
         return user.getName();

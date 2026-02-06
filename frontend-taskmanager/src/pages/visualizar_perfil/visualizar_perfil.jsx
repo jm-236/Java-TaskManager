@@ -27,6 +27,10 @@ const VisualizarPerfil = () => {
     setIsEditingEmail(!isEditingEmail);
   };
 
+  const backToMenu = () => {
+    window.location.href = '/inicio'
+  }
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData(prev => ({
@@ -35,11 +39,23 @@ const VisualizarPerfil = () => {
     }));
   };
 
-  const handleSaveChanges = () => {
+  const handleSaveChanges = async (e) => {
+
+    e.preventDefault();
+
     // Lógica para salvar alterações no servidor
     console.log('Salvando alterações:', userData);
     setIsEditingName(false);
     setIsEditingEmail(false);
+    
+    const body = {
+      email: userData.email, 
+      name: userData.name
+    }
+    
+    const response = await api.put('/user', body);
+
+    window.confirm(response.data);
   };
 
   const handleDeleteAccount = async () => {
@@ -67,6 +83,7 @@ const VisualizarPerfil = () => {
             variant="link" 
             className="text-white p-0 me-3"
             style={{ backgroundColor: 'transparent', border: 'none' }}
+            onClick={backToMenu}
           >
             <ChevronLeft size={24} />
           </Button>
@@ -152,18 +169,6 @@ const VisualizarPerfil = () => {
               }}
             >
               Salvar alterações
-            </Button>
-            
-            <Button 
-              variant="warning" 
-              className="mb-4 w-100"
-              style={{ 
-                borderRadius: '50px', 
-                backgroundColor: '#F9BE4B',
-                border: 'none'
-              }}
-            >
-              Limpar tarefas
             </Button>
 
             <Button 

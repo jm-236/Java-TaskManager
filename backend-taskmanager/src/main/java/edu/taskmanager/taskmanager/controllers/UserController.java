@@ -62,6 +62,13 @@ public class UserController {
         return ResponseEntity.ok("Usuário com email " + user.getEmail() + "removido do taskmanager.");
     }
 
+    @PutMapping
+    public ResponseEntity<String> updateUser(Authentication authentication, @RequestBody UserDto userDto){
+        userServices.updateUser(userDto.email(), userDto.name(), authentication);
+
+        return ResponseEntity.ok("Dados do usuário atualizados com sucesso!");  
+    }
+
     /**
      * This method is a GET endpoint for retrieving tasks.
      * It is annotated with @GetMapping, meaning it will respond to HTTP GET requests.
