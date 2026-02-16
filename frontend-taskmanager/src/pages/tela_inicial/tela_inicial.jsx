@@ -26,11 +26,11 @@ const TelaInicial = () => {
         window.location.href = "/login"
     };
 
-  const logout = () => {
+  const logout = async () => {
 
-    Cookies.remove("JWT-Cookie")
+    const response = await api.post('/auth/logout')
     // setPopupMessage(`Usuário ${nome} deslogado com sucesso!`);
-    setPopupMessage("Usuário deslogado com sucesso!")
+    setPopupMessage(response.data)
     setIsPopupVisible(true);
 
   }

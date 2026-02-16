@@ -5,6 +5,8 @@ import edu.taskmanager.taskmanager.dto.*;
 import edu.taskmanager.taskmanager.infra.security.TokenService;
 import edu.taskmanager.taskmanager.services.impl.AuthServicesImpl;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -95,4 +97,17 @@ public class AuthController {
         }
 
     }
+
+    @PostMapping("/logout")
+    public  ResponseEntity logout(HttpServletResponse response){
+
+        Cookie cookie = new Cookie("JWTCookie", null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        response.addCookie(cookie);
+        return ResponseEntity.ok("Logout realizado com sucesso");
+    }
+
 }
