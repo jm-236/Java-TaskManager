@@ -1,6 +1,7 @@
 package edu.taskmanager.taskmanager.controllers;
 
 import edu.taskmanager.taskmanager.domain.user.User;
+import edu.taskmanager.taskmanager.dto.EmailDto;
 import edu.taskmanager.taskmanager.dto.TaskDto;
 import edu.taskmanager.taskmanager.dto.UserDto;
 import edu.taskmanager.taskmanager.dto.resetPasswordDto;
@@ -153,9 +154,9 @@ public class UserController {
      * @return a ResponseEntity with a success message and a HTTP status code of 200 (OK).
      */
     @PostMapping("/password-reset")
-    public ResponseEntity<String> resetPassword(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader) {
-        String email = tokenService.getUserEmailFromToken(authorizationHeader);
-        passwordResetServices.sendResetEmail(email);
+    public ResponseEntity<String> resetPassword(@RequestBody EmailDto emailDto) {
+
+        passwordResetServices.sendResetEmail(emailDto.email());
         return ResponseEntity.ok("E-mail de redefinição enviado, verifique sua caixa de entrada.");
     }
 
@@ -171,10 +172,9 @@ public class UserController {
      * @return a ResponseEntity with a success message and a HTTP status code of 200 (OK).
      */
     @PostMapping("/reset/{token}")
-    public ResponseEntity<String> resetPassword(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
-                                                @PathVariable String token, @RequestBody resetPasswordDto body) {
+    public ResponseEntity<String> resetPassword(@PathVariable String token, @RequestBody resetPasswordDto body) {
 
-        String email = tokenService.getUserEmailFromToken(authorizationHeader);
+        String email = tokenService.getUserEmailFromToken(token);
 
         passwordResetServices.updatePassword(token, email, body.newPassword());
         return ResponseEntity.ok("Senha redefinida com sucesso!");

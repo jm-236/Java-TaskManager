@@ -24,20 +24,19 @@ function App() {
           <Route path='/login' element={ <TelaLogin />} />
           <Route path='/register' element={ <Cadastro />} />
           
-          {/* Rotas protegidas */}
           <Route path='/esqueci_minha_senha' 
             element={ 
-              <RotaProtegida>
                 <MudarSenha />
-              </RotaProtegida>} 
-          />
-          <Route path='/redefinir_senha' 
-          element={ 
-              <RotaProtegida>
-                <NovaSenha />
-              </RotaProtegida>} 
+              } 
           />
           
+          <Route path='/redefinir_senha/:token' 
+          element={ 
+                <NovaSenha />
+          } 
+          />
+
+          {/* Rotas protegidas */}
           <Route path='/inicio' element={ 
               <RotaProtegida>
                 <TelaInicial />

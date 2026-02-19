@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 
@@ -44,5 +45,5 @@ public class PasswordResetToken {
     /**
      * The expiry date and time of the password reset token.
      */
-    private LocalDateTime expiryDate;
+    private Instant expiryDate;
 }

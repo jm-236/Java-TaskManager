@@ -81,7 +81,8 @@ function TelaLogin() {
                     className='text-white my-2 item align-self-center'
                 />
 
-                <a href="#" className='text-white text-sm text-decoration-underline' onClick={(e) => { e.preventDefault(); setPopupMessage('Funcionalidade ainda não implementada.'); setIsPopupVisible(true); }}>Esqueci minha senha</a>
+                <a href="#" className='text-white text-sm text-decoration-underline' onClick={(e) => { e.preventDefault(); window.location.href = '/esqueci_minha_senha'
+                 }}>Esqueci minha senha</a>
                 <Link className='text-white text-sm text-decoration-underline' to='/register'>Realizar cadastro</Link>
 
                 {erro && <div className='text-danger mt-2'>{erro}</div>}

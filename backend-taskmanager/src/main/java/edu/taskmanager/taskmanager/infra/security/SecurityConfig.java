@@ -47,6 +47,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("auth/login").permitAll()
                         .requestMatchers("auth/register").permitAll()
+                        .requestMatchers("/user/password-reset").permitAll()
+                        .requestMatchers("user/reset/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll() // acesso ao console do banco de dados
                         // para qualquer outra camada ele deve estar autenticado
                         .anyRequest().authenticated()

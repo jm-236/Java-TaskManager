@@ -27,7 +27,7 @@ public class DataSeeder implements CommandLineRunner {
 
     private void seedAdminUser() {
 
-        String email = "joao@gmail.com";
+        String email = "joaomarcelocosta14@gmail.com";
         String nome = "joao";
         String senha = "123";
 

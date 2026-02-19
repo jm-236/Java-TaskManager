@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -27,11 +28,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PasswordResetServicesImpl implements PasswordResetServices {
 
-    private PasswordResetTokenRepository tokenRepository;
+    private final PasswordResetTokenRepository tokenRepository;
 
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Value("${app.reset-password.url}")
     private String resetUrl; // URL base for password reset.
@@ -60,7 +61,7 @@ public class PasswordResetServicesImpl implements PasswordResetServices {
         PasswordResetToken passwordResetToken = new PasswordResetToken();
         passwordResetToken.setToken(token);
         passwordResetToken.setUser(user);
-        passwordResetToken.setExpiryDate(LocalDateTime.now().plusHours(1));
+        passwordResetToken.setExpiryDate(Instant.now().plusSeconds(3600));
         tokenRepository.save(passwordResetToken);
 
         String resetLink = resetUrl + "/" + token;
@@ -85,7 +86,9 @@ public class PasswordResetServicesImpl implements PasswordResetServices {
         PasswordResetToken resetToken = tokenRepository.findByToken(token)
                 .orElseThrow(() -> new IllegalArgumentException("Token inválido ou expirado"));
 
-        if (resetToken.getExpiryDate().isBefore(LocalDateTime.now())) {
+        System.out.println(Instant.now());
+        System.out.println(resetToken.getExpiryDate());
+        if (resetToken.getExpiryDate().isBefore(Instant.now())) {
             throw new IllegalArgumentException("Token expirado");
         }
 
