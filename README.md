@@ -179,7 +179,7 @@ src/
 | `id` | Long | Identificador |
 | `token` | String | Token UUID para redefinição |
 | `user` | User | Usuário associado |
-| `expiryDate` | LocalDateTime | Validade (1 hora) |
+| `expiryDate` | Instant | Validade (1 hora) |
 
 ---
 
